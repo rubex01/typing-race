@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+#  node:
+#    image: node:latest
+#    working_dir: /usr/src/app
+#    volumes:
+#      - ./server:/usr/src/app
+#    command: tail -f /dev/null
+
+  socketio:
+    image: node:latest
+    ports:
+      - '3000:3000'
+    working_dir: /app
+    volumes:
+      - ./server:/app
+    command: node server.js
+#    command: tail -f /dev/null
+
+  app:
+    image: node:latest
+    ports:
+      - '5173:5173'
+    working_dir: /app
+    volumes:
+      - ./client:/app
+    command: npm run dev -- --host
