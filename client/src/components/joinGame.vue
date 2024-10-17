@@ -2,6 +2,8 @@
 
 import {ref} from "vue";
 import {useGameStore} from "@/stores/game.js";
+import DefaultButton from "@/components/defaultButton.vue";
+import TextInput from "@/components/textInput.vue";
 
 const gameId = ref();
 
@@ -15,13 +17,19 @@ const joinGame = (event) => {
 
 <template>
   <div>
-    <form @submit="joinGame">
-      <input v-model="gameId">
-      <button type="submit">join</button>
+    <form @submit="joinGame" class="form">
+      <text-input class="input" v-model="gameId" />
+      <default-button type="submit">join</default-button>
     </form>
   </div>
 </template>
 
 <style scoped>
+.form {
+  display: flex;
+}
 
+.input {
+  margin-right: 4rem;
+}
 </style>
