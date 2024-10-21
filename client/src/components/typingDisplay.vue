@@ -47,9 +47,21 @@ const playersThatAreFurther = computed(() => {
   width: 100%;
   height: 5px;
   background: red;
+  animation: slide;
+  animation-duration: .5s;
+  animation-fill-mode: both;
 }
 
 .player-highlight {
   position: absolute;
+}
+
+@keyframes slide {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
 }
 </style>
