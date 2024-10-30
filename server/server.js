@@ -1,23 +1,26 @@
-const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
+import express from 'express';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import GameService from "./services/gameService.js";
 
 const app = express();
-const server = http.createServer(app);
-const io = socketIo(server, {
+const server = createServer(app);
+const io = new Server(server, {
   cors: {
-    origin: '*', // Allow cross-origin requests from any domain
+    origin: '*',
   },
 });
 
+const gameService = GameService(io);
+
 io.on('connection', (socket) => {
   socket.on('join', (room) => {
-    socket.join(room);
-  })
+    gameService.playerJoinedRoom(socket, room);
+  });
 
   socket.on('gameEvent', (gameId, data) => {
-    io.to(gameId).emit(gameId, data);
-  })
+    gameService.sendGameData(socket, gameId, data)
+  });
 });
 
 const PORT = process.env.PORT || 3000;

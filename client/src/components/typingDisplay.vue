@@ -2,6 +2,7 @@
 import {useGameStore} from "@/stores/game.js";
 import {storeToRefs} from "pinia";
 import {computed} from "vue";
+import WordsPerMinute from "@/components/wordsPerMinute.vue";
 
 const gameStore = useGameStore();
 const { words, gameId, gameState, letterIndex } = storeToRefs(gameStore);
@@ -21,39 +22,47 @@ const playersThatAreFurther = computed(() => {
 </script>
 
 <template>
-  <div class="word-container">
-    <div v-for="word in wordsWithIndex" class="word">
+  <div class="typing-display">
+    <div v-for="word in wordsWithIndex" class="typing-display-word">
       {{ word.word }}
       <div v-for="player in playersThatAreFurther">
-        <div class="bar" v-if="player.letterIndex > (word.letterIndex + letterIndex)"></div>
-        <div class="player-highlight" v-if="player.letterIndex === (word.letterIndex + word.word.length + letterIndex)">{{ player.playerName }}</div>
+        <div class="typing-display-bar" v-if="player.letterIndex > (word.letterIndex + letterIndex)"></div>
+        <div class="typing-display-player-tag" v-if="player.letterIndex === (word.letterIndex + word.word.length + letterIndex)">{{ player.playerName }}</div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-.word-container {
+<style scoped lang="scss">
+.typing-display {
   flex-wrap: wrap;
   display: flex;
   gap: 3rem;
-}
 
-.word {
-  font-size: 1.3rem;
-}
+  &-word {
+    font-size: 1.3rem;
+  }
 
-.bar {
-  width: 100%;
-  height: 5px;
-  background: red;
-  animation: slide;
-  animation-duration: .5s;
-  animation-fill-mode: both;
-}
+  &-bar {
+    width: 100%;
+    height: 5px;
+    background: rgb(255, 0, 0, .5);
+    animation: slide;
+    animation-duration: .5s;
+    animation-fill-mode: both;
+  }
 
-.player-highlight {
-  position: absolute;
+  &-player-tag {
+    position: absolute;
+    background: white;
+    border: 1px solid black;
+    padding: 0.3rem;
+    border-radius: 0.3rem;
+
+    &:hover {
+      z-index: 1;
+    }
+  }
 }
 
 @keyframes slide {

@@ -4,7 +4,7 @@ import PlayerCreation from "@/components/playerCreation.vue";
 
 <template>
   <div>
-    <div class="text">
+    <div class="start-page">
       <h1 class="title">Your</h1>
       <h1 class="title">Player Tag</h1>
     </div>
@@ -13,12 +13,7 @@ import PlayerCreation from "@/components/playerCreation.vue";
 </template>
 
 <style scoped>
-.title {
-  margin-bottom: 0;
-  margin-top: 0;
-}
-
-.text {
+.start-page {
   margin-bottom: 3rem;
 }
 </style>

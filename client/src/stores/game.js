@@ -6,19 +6,18 @@ import {usePlayerStore} from "@/stores/player.js";
 
 export const useGameStore = defineStore('game', () => {
   const gameId = ref(null)
-  const words = ref([
-    'Iedereen', 'is', 'aan', 'het', 'slapen,', 'maar', 'Pim', 'staat', 'buiten.',
-    'Wat', 'is', 'het', 'koud!', 'En', 'wat', 'is', 'het', 'spannend.', 'Pim',
-    'heeft', 'van', 'te', 'voren', 'goed', 'opgelet', 'en', 'bekeken', 'hoe',
-    'hij', 'moet', 'lopen.', 'Hij', 'heeft', 'zelfs', 'een', 'plattegrondje', 'meegenomen.'
-  ]);
+  const words = ref([]);
+  const finalLetterIndex = ref(0);
   const letterIndex = ref(0)
   const gameState = ref([]);
+  const gameStart = ref(null);
+  const now = ref(null);
 
   const playerStore = usePlayerStore();
   const { playerId, playerName } = storeToRefs(playerStore);
 
-  const isPlaying = computed(() => gameId.value !== null)
+  const gameJoined = computed(() => gameId.value !== null);
+  const gameStarted = computed(() => gameStart.value && gameStart.value <= now.value);
 
   const joinGame = (id) => {
     gameId.value = id;
@@ -31,18 +30,50 @@ export const useGameStore = defineStore('game', () => {
   }
 
   watch(gameId, (newValue, oldValue) => {
-    unsubscribeSocket(oldValue)
-    clearGameState()
-    subscribeSocket(newValue)
+    unsubscribeSocket(oldValue);
+    clearGameState();
+    subscribeSocket(newValue);
   })
 
-  const clearGameState = () => gameState.value = []
+  const clearGameState = () => {
+    gameState.value = [];
+    words.value = [];
+    letterIndex.value = 0;
+    gameStarted.value = [];
+    gameStart.value = null;
+    now.value = null;
+    finalLetterIndex.value = 0;
+  }
 
   const unsubscribeSocket = (id) => socket.off(id)
 
   const subscribeSocket = (id) => socket.on(id, (data) => {
-    updateGameState(data)
+    handleServerData(data);
   });
+
+  const handleServerData = (data) => {
+    switch (data.type) {
+      case 'gameStart':
+        handleGameStart(data.data);
+        break;
+      case 'gameEvent':
+        updateGameState(data.data);
+        break;
+    }
+  }
+
+  const handleGameStart = (data) => {
+    words.value = data.words;
+    finalLetterIndex.value = words.value.join('').length;
+    gameStart.value = new Date(data.startTime);
+    now.value = new Date();
+    const interval = setInterval(() => {
+      now.value = new Date();
+      if (gameStart.value < now.value) {
+        clearInterval(interval)
+      }
+    }, 1000);
+  }
 
   const updateGameState = (newData) => {
     if (newData.playerId === playerId.value) {
@@ -75,11 +106,11 @@ export const useGameStore = defineStore('game', () => {
           letterIndex: index
         }
       );
-  }, 800);
+  }, 300);
 
   watch(letterIndex, (newIndex) => {
     debouncedSendLetterIndex(newIndex);
   });
 
-  return { gameId, joinGame, isPlaying, gameState, submitWord, createGame, words, letterIndex }
+  return { gameId, joinGame, gameJoined, gameState, submitWord, createGame, words, letterIndex, gameStarted, gameStart }
 })

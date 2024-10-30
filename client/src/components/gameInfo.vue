@@ -1,5 +1,4 @@
 <script setup>
-
 import {useGameStore} from "@/stores/game.js";
 import {storeToRefs} from "pinia";
 import {usePlayerStore} from "@/stores/player.js";
@@ -14,18 +13,20 @@ const { playerId, playerName } = storeToRefs(playerStore);
 
 <template>
   <table>
-    <tr>
-      <td>GameId</td>
-      <td>{{ gameId }}</td>
-    </tr>
-    <tr>
-      <td>UserId</td>
-      <td>{{ playerId }}</td>
-    </tr>
-    <tr>
-      <td>Name</td>
-      <td>{{ playerName }}</td>
-    </tr>
+    <tbody>
+      <tr>
+        <td>GameId</td>
+        <td>{{ gameId }}</td>
+      </tr>
+      <tr>
+        <td>UserId</td>
+        <td>{{ playerId }}</td>
+      </tr>
+      <tr>
+        <td>Name</td>
+        <td>{{ playerName }}</td>
+      </tr>
+    </tbody>
   </table>
 </template>
 

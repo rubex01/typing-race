@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A simple Socket.io server",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node server.js"
   },

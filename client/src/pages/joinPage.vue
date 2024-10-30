@@ -4,14 +4,14 @@ import StartGame from "@/components/startGame.vue";
 </script>
 
 <template>
-  <div class="container">
+  <div class="join-page">
     <join-game />
     <start-game />
   </div>
 </template>
 
-<style scoped>
-.container {
+<style scoped lang="scss">
+.join-page {
   display: flex;
   flex-direction: column;
   gap: 4rem;
