@@ -7,6 +7,7 @@ import StartPage from "@/pages/startPage.vue";
 import JoinPage from "@/pages/joinPage.vue";
 import GamePage from "@/pages/gamePage.vue";
 import WaitPage from "@/pages/waitPage.vue";
+import YouWon from "@/components/youWon.vue";
 
 const playerStore = usePlayerStore();
 const gameStore = useGameStore();

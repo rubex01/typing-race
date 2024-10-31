@@ -14,8 +14,16 @@ const io = new Server(server, {
 const gameService = GameService(io);
 
 io.on('connection', (socket) => {
-  socket.on('join', (room) => {
-    gameService.playerJoinedRoom(socket, room);
+  socket.on('join', (room, data) => {
+    gameService.playerJoinedRoom(socket, room, data);
+
+    socket.on('disconnect', () => {
+      gameService.playerDisconnected(socket, room);
+    });
+  });
+
+  socket.on('leave', (gameId) => {
+    gameService.playerDisconnected(socket, gameId);
   });
 
   socket.on('gameEvent', (gameId, data) => {

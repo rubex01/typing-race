@@ -1,6 +1,26 @@
+<script setup>
+import {ref} from "vue";
+
+defineProps({
+  modelValue: String
+});
+
+defineEmits(['update:modelValue']);
+
+const input = ref();
+
+const focus = () => {
+  input.value?.focus();
+};
+
+defineExpose({ focus });
+
+</script>
+
 <template>
   <div class="input-container">
     <input
+      ref="input"
       type="text"
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
@@ -8,14 +28,6 @@
     />
   </div>
 </template>
-
-<script setup>
-defineProps({
-  modelValue: String
-});
-
-defineEmits(['update:modelValue']);
-</script>
 
 <style scoped>
 .input-container {

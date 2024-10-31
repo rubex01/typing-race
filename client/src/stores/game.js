@@ -12,22 +12,24 @@ export const useGameStore = defineStore('game', () => {
   const gameState = ref([]);
   const gameStart = ref(null);
   const now = ref(null);
+  const playerWon = ref(false);
+  const playerLost = ref(false);
 
   const playerStore = usePlayerStore();
-  const { playerId, playerName } = storeToRefs(playerStore);
+  const {playerId, playerName} = storeToRefs(playerStore);
 
   const gameJoined = computed(() => gameId.value !== null);
   const gameStarted = computed(() => gameStart.value && gameStart.value <= now.value);
+  const doneTyping = computed(() => letterIndex.value >= finalLetterIndex.value);
 
   const joinGame = (id) => {
     gameId.value = id;
-    socket.emit('join', gameId.value)
+    socket.emit('join', gameId.value, {
+      playerId: playerId.value
+    })
   }
 
-  const createGame = (id) => {
-    gameId.value = id;
-    socket.emit('join', gameId.value)
-  }
+  const createGame = (id) => joinGame(id);
 
   watch(gameId, (newValue, oldValue) => {
     unsubscribeSocket(oldValue);
@@ -43,6 +45,8 @@ export const useGameStore = defineStore('game', () => {
     gameStart.value = null;
     now.value = null;
     finalLetterIndex.value = 0;
+    playerWon.value = false;
+    playerLost.value = false;
   }
 
   const unsubscribeSocket = (id) => socket.off(id)
@@ -59,7 +63,18 @@ export const useGameStore = defineStore('game', () => {
       case 'gameEvent':
         updateGameState(data.data);
         break;
+      case 'gameWinner':
+        handleGameWinner(data.data);
+        break;
     }
+  }
+
+  const handleGameWinner = (data) => {
+    if (playerId.value === data.winner) {
+      playerWon.value = true;
+      return;
+    }
+    playerLost.value = true;
   }
 
   const handleGameStart = (data) => {
@@ -98,19 +113,41 @@ export const useGameStore = defineStore('game', () => {
 
   const debouncedSendLetterIndex = debounce((index) => {
     socket.emit(
-        'gameEvent',
-        gameId.value,
-        {
-          playerId: playerId.value,
-          playerName: playerName.value,
-          letterIndex: index
-        }
-      );
+      'gameEvent',
+      gameId.value,
+      {
+        playerId: playerId.value,
+        playerName: playerName.value,
+        letterIndex: index
+      }
+    );
   }, 300);
 
   watch(letterIndex, (newIndex) => {
     debouncedSendLetterIndex(newIndex);
   });
 
-  return { gameId, joinGame, gameJoined, gameState, submitWord, createGame, words, letterIndex, gameStarted, gameStart }
+  const leaveGame = () => {
+    socket.emit('leave', gameId.value);
+    unsubscribeSocket(gameId.value);
+    gameId.value = null;
+    clearGameState();
+  }
+
+  return {
+    gameId,
+    joinGame,
+    gameJoined,
+    gameState,
+    submitWord,
+    createGame,
+    words,
+    letterIndex,
+    gameStarted,
+    gameStart,
+    leaveGame,
+    doneTyping,
+    playerWon,
+    playerLost,
+  }
 })

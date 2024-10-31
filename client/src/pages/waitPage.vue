@@ -10,7 +10,7 @@ const countdown = ref(null);
 
 const countdownText = computed(() => countdown.value ? `${countdown.value} seconds` : '');
 
-const test = () => {
+const setCountdown = () => {
   if (!gameStart) {
     return;
   }
@@ -20,7 +20,7 @@ const test = () => {
 let interval = null;
 
 onMounted(() => {
-  interval = setInterval(test, 1000)
+  interval = setInterval(setCountdown, 100)
 })
 onUnmounted(() => clearInterval(interval));
 

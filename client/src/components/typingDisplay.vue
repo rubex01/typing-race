@@ -38,6 +38,8 @@ const playersThatAreFurther = computed(() => {
   flex-wrap: wrap;
   display: flex;
   gap: 3rem;
+  position: relative;
+  overflow: hidden;
 
   &-word {
     font-size: 1.3rem;

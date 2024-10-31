@@ -1,12 +1,12 @@
 <script setup>
-
-import {onMounted, onUnmounted, ref} from "vue";
+import {computed, onMounted, onUnmounted, ref, watch} from "vue";
 import {useGameStore} from "@/stores/game.js";
 import {storeToRefs} from "pinia";
 
 const gameStore = useGameStore();
 const { letterIndex, gameStart } = storeToRefs(gameStore);
 
+const doneTyping = computed(() => gameStore.doneTyping)
 const wordsPerMinute = ref(0);
 
 const calculateWordsPerMinute = () => {
@@ -15,10 +15,19 @@ const calculateWordsPerMinute = () => {
 }
 
 let interval = null;
+
 onMounted(() => {
   interval = setInterval(calculateWordsPerMinute, 1000);
 })
+
 onUnmounted(() => clearInterval(interval));
+
+watch(doneTyping, newValue => {
+  if (newValue === true) {
+    clearInterval(interval);
+  }
+});
+
 </script>
 
 <template>

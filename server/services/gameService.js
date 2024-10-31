@@ -1,37 +1,36 @@
+import { WordRepository } from "../repositories/wordRepository.js";
+
 const GameService = (io) => {
     const ioInstance = io;
 
-    const games = []
+    const games = [];
 
-    const playerJoinedRoom = (socket, gameId) => {
-        const game = getOrCreateGameForRoom(gameId);
+    const wordRepository = WordRepository();
+
+    const playerJoinedRoom = (socket, gameId, data) => {
+        const game= getOrCreateGameForRoom(gameId);
         if (game.startTime !== null && game.startTime <= new Date()) {
             return;
         }
         socket.join(gameId);
-        game.players.push(socket.id)
-        if (game.players.length > 1) {
+        game.players.set(socket.id, data.playerId)
+        if (game.players.size > 1) {
             startGame(gameId, game);
         }
-        socket.on('disconnect', () => {
-            handlePlayerDisconnect(socket, gameId);
-        });
     }
 
     const getOrCreateGameForRoom = (room) => {
         let game = games.find(x => x.gameId === room);
         if (!game) {
+            const words = wordRepository.getRandomWords(21);
             game = {
                 gameId: room,
-                players: [],
-                finishedPlayers: [],
+                players: new Map(),
                 startTime: null,
-                words: [
-                    'Iedereen', 'is', 'aan', 'het', 'slapen,', 'maar', 'Pim', 'staat', 'buiten.',
-                    'Wat', 'is', 'het', 'koud!', 'En', 'wat', 'is', 'het', 'spannend.', 'Pim',
-                    'heeft', 'van', 'te', 'voren', 'goed', 'opgelet', 'en', 'bekeken', 'hoe',
-                    'hij', 'moet', 'lopen.', 'Hij', 'heeft', 'zelfs', 'een', 'plattegrondje', 'meegenomen.'
-                ],
+                words,
+                finalLetterIndex: words.join('').length,
+                winner: null,
+                destructTimer: null,
             };
             games.push(game);
         }
@@ -40,6 +39,9 @@ const GameService = (io) => {
 
     const startGame = (gameId, game) => {
         game.startTime = new Date((new Date()).getTime() + 3000);
+        game.destructTimer = setTimeout(() => {
+            removeGame(gameId);
+        }, 3000000);
         ioInstance.to(gameId).emit(gameId, {
             type: "gameStart",
             data: {
@@ -54,7 +56,7 @@ const GameService = (io) => {
         if (
             game === null ||
             game?.startTime === null ||
-            !game.players.some(x => x === socket.id)
+            !game?.players.has(socket.id)
         ) {
             return;
         }
@@ -62,14 +64,22 @@ const GameService = (io) => {
             type: "gameEvent",
             data,
         });
+        if (data?.letterIndex >= game.finalLetterIndex && game.winner === null) {
+            game.winner = socket.id;
+            ioInstance.to(gameId).emit(gameId, {
+                type: "gameWinner",
+                data: {
+                    winner: game.players.get(socket.id)
+                },
+            });
+        }
     }
 
-    const handlePlayerDisconnect = (socket, gameId) => {
+    const playerDisconnected = (socket, gameId) => {
         const game = games.find(x => x.gameId === gameId);
         if (!game) return;
-
-        game.players = game.players.filter(playerId => playerId !== socket.id);
-        if (game.players.length < 2) {
+        game.players.delete(socket.id);
+        if (game.players.size === 0) {
             removeGame(gameId);
         }
     };
@@ -79,11 +89,12 @@ const GameService = (io) => {
         if (index === -1) {
             return;
         }
+        clearTimeout(games[index].destructTimer);
         games.splice(index, 1);
     };
 
     return {
-        playerJoinedRoom, sendGameData
+        playerJoinedRoom, sendGameData, playerDisconnected
     };
 };
 
