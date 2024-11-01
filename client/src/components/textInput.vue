@@ -1,20 +1,18 @@
 <script setup>
-import {ref} from "vue";
-
+import { ref } from 'vue'
 defineProps({
-  modelValue: String
-});
+  modelValue: String,
+})
 
-defineEmits(['update:modelValue']);
+defineEmits(['update:modelValue'])
 
-const input = ref();
+const input = ref()
 
 const focus = () => {
-  input.value?.focus();
-};
+  input.value?.focus()
+}
 
-defineExpose({ focus });
-
+defineExpose({ focus })
 </script>
 
 <template>
@@ -29,7 +27,9 @@ defineExpose({ focus });
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@import '@/assets/mixins';
+
 .input-container {
   display: flex;
   justify-content: center;
@@ -40,13 +40,18 @@ defineExpose({ focus });
   padding: 3rem 5rem;
   width: 100%;
   border: none;
-  outline: none;
   border-radius: 3rem;
   background: #ffffff;
-  box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
+  box-shadow:
+    20px 20px 60px #d9d9d9,
+    -20px -20px 60px #ffffff;
   font-size: 3rem;
-  transition: .3s;
+  transition: 0.3s;
   font-weight: 500;
+
+  @include mobile {
+    padding: 1rem;
+  }
 }
 
 .custom-input:hover {

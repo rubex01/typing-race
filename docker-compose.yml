@@ -10,13 +10,14 @@ services:
     volumes:
       - ./server:/app
     command: node server.js
-#    command: tail -f /dev/null
 
   app:
     image: node:20
     ports:
       - '5173:5173'
     working_dir: /app
+    environment:
+      - VITE_SOCKET_URL=http://localhost:3000
     volumes:
       - ./client:/app
     command: npm run dev -- --host

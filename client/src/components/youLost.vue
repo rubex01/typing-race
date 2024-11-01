@@ -1,6 +1,4 @@
-<script setup>
-
-</script>
+<script setup></script>
 
 <template>
   <div class="you-lost">
@@ -20,7 +18,7 @@
     animation: fade-out;
     animation-duration: 2.5s;
     animation-fill-mode: both;
-    color: rgba(255, 0, 0, .5)
+    color: rgba(255, 0, 0, 0.5);
   }
 }
 

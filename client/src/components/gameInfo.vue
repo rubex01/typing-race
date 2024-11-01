@@ -1,14 +1,13 @@
 <script setup>
-import {useGameStore} from "@/stores/game.js";
-import {storeToRefs} from "pinia";
-import {usePlayerStore} from "@/stores/player.js";
+import { useGameStore } from '@/stores/game.js'
+import { storeToRefs } from 'pinia'
+import { usePlayerStore } from '@/stores/player.js'
 
-const gameStore = useGameStore();
-const { gameId } = storeToRefs(gameStore);
+const gameStore = useGameStore()
+const { gameId } = storeToRefs(gameStore)
 
-const playerStore = usePlayerStore();
-const { playerId, playerName } = storeToRefs(playerStore);
-
+const playerStore = usePlayerStore()
+const { playerId, playerName } = storeToRefs(playerStore)
 </script>
 
 <template>
@@ -30,6 +29,4 @@ const { playerId, playerName } = storeToRefs(playerStore);
   </table>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped lang="scss"></style>

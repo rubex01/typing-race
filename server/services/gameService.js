@@ -8,7 +8,8 @@ const GameService = (io) => {
     const wordRepository = WordRepository();
 
     const playerJoinedRoom = (socket, gameId, data) => {
-        const game= getOrCreateGameForRoom(gameId);
+        const game = getOrCreateGameForRoom(gameId);
+        console.log(gameId, data, 'joinroom')
         if (game.startTime !== null && game.startTime <= new Date()) {
             return;
         }

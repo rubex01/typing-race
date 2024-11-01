@@ -1,5 +1,5 @@
 <script setup>
-import PlayerCreation from "@/components/playerCreation.vue";
+import PlayerCreation from '@/components/playerCreation.vue'
 </script>
 
 <template>
@@ -12,7 +12,7 @@ import PlayerCreation from "@/components/playerCreation.vue";
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .start-page {
   margin-bottom: 3rem;
 }

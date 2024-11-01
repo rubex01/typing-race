@@ -1,14 +1,11 @@
 <script setup>
+import { useGameStore } from '@/stores/game.js'
 
-import {useGameStore} from "@/stores/game.js";
-
-const gameStore = useGameStore();
+const gameStore = useGameStore()
 </script>
 
 <template>
-  <button @click="gameStore.leaveGame" class="leave-game">
-    Leave
-  </button>
+  <button @click="gameStore.leaveGame" class="leave-game">Leave</button>
 </template>
 
 <style scoped lang="scss">

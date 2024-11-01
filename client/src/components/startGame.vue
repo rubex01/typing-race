@@ -1,12 +1,12 @@
 <script setup>
-import { v4 as uuidv4 } from 'uuid';
-import {useGameStore} from "@/stores/game.js";
-import DefaultButton from "@/components/defaultButton.vue";
+import { v4 as uuidv4 } from 'uuid'
+import { useGameStore } from '@/stores/game.js'
+import DefaultButton from '@/components/defaultButton.vue'
 
 const gameStore = useGameStore()
 
 const startGame = () => {
-  gameStore.createGame(uuidv4());
+  gameStore.createGame(uuidv4())
 }
 </script>
 
@@ -16,6 +16,4 @@ const startGame = () => {
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped lang="scss"></style>

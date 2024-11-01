@@ -1,6 +1,6 @@
 <script setup>
-import JoinGame from "@/components/joinGame.vue";
-import StartGame from "@/components/startGame.vue";
+import JoinGame from '@/components/joinGame.vue'
+import StartGame from '@/components/startGame.vue'
 </script>
 
 <template>

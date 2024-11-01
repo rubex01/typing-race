@@ -1,17 +1,17 @@
 <script setup>
-import TypingDisplay from "@/components/typingDisplay.vue";
-import TypingForm from "@/components/typingForm.vue";
-import GameInfo from "@/components/gameInfo.vue";
-import WordsPerMinute from "@/components/wordsPerMinute.vue";
-import LeaveGame from "@/components/leaveGame.vue";
-import {useGameStore} from "@/stores/game.js";
-import {storeToRefs} from "pinia";
-import YouWon from "@/components/youWon.vue";
-import YouLost from "@/components/youLost.vue";
-import {computed} from "vue";
+import TypingDisplay from '@/components/typingDisplay.vue'
+import TypingForm from '@/components/typingForm.vue'
+import GameInfo from '@/components/gameInfo.vue'
+import WordsPerMinute from '@/components/wordsPerMinute.vue'
+import LeaveGame from '@/components/leaveGame.vue'
+import { useGameStore } from '@/stores/game.js'
+import { storeToRefs } from 'pinia'
+import YouWon from '@/components/youWon.vue'
+import YouLost from '@/components/youLost.vue'
+import { computed } from 'vue'
 
-const gameStore = useGameStore();
-const { playerWon, playerLost } = storeToRefs(gameStore);
+const gameStore = useGameStore()
+const { playerWon, playerLost } = storeToRefs(gameStore)
 const doneTyping = computed(() => gameStore.doneTyping)
 </script>
 
@@ -61,5 +61,4 @@ const doneTyping = computed(() => gameStore.doneTyping)
     width: 100%;
   }
 }
-
 </style>

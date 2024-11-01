@@ -1,17 +1,17 @@
 <script setup>
-import {ref} from "vue";
-import {usePlayerStore} from "@/stores/player.js";
-import TextInput from "@/components/textInput.vue";
+import { ref } from 'vue'
+import { usePlayerStore } from '@/stores/player.js'
+import TextInput from '@/components/textInput.vue'
 
-const playerStore = usePlayerStore();
+const playerStore = usePlayerStore()
 
-const name = ref('');
+const name = ref('')
 
-const savePlayer = (event) => {
+const savePlayer = event => {
   event.preventDefault()
+  if (name.value === '') return
   playerStore.setPlayer(name.value)
 }
-
 </script>
 
 <template>
@@ -22,6 +22,4 @@ const savePlayer = (event) => {
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped lang="scss"></style>

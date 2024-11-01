@@ -1,6 +1,4 @@
-<script setup>
-
-</script>
+<script setup></script>
 
 <template>
   <button class="button">
@@ -8,7 +6,7 @@
   </button>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .button {
   font-weight: 900;
   font-size: 5rem;
