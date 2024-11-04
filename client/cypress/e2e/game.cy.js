@@ -12,7 +12,7 @@ describe('game page', () => {
       .type('Player123{enter}')
 
     cy.get('input').type(gameId)
-    cy.contains('button', 'join').click()
+    cy.contains('button', 'Join').click()
 
     cy.get('.game-page').should('exist');
   })
@@ -20,14 +20,13 @@ describe('game page', () => {
   it('Game can be played and won', () => {
     cy.get('.typing-display')
       .find('div')
-      .each(($word, index) => {
-        if (index === 21) return;
+      .each(($word) => {
         const wordText = $word.text();
         cy.log(`Typing word: ${wordText}`);
         cy.get('input').type(wordText + ' ');
       });
 
-    cy.contains('h1', 'You Won').should('be.visible')
+    cy.get('.you-won').should('be.visible')
   });
 
   it('Game is leavable', () => {

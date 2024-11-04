@@ -1,6 +1,8 @@
 <script setup>
 import confetti from 'canvas-confetti'
 import { onMounted } from 'vue'
+import winner from '@/assets/images/winner.png'
+import crown from '@/assets/images/crown.png'
 
 const count = 200
 const defaults = {
@@ -43,22 +45,68 @@ onMounted(() => {
 
 <template>
   <div class="you-won">
-    <h1 class="you-won-title">You Won</h1>
+    <img :src="winner" alt="You won" class="you-won-text" />
+    <img :src="crown" alt="Crown" class="you-won-crown" />
   </div>
 </template>
 
 <style scoped lang="scss">
+@use '@/assets/styles/mixins';
+
 .you-won {
-  &-title {
-    font-size: 7rem;
-    position: fixed;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
+  width: 100%;
+  position: fixed;
+  display: flex;
+  top: 30%;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+
+  &-text {
     animation: fade-out;
-    animation-duration: 2.5s;
+    animation-delay: 1.5s;
+    animation-duration: 4.5s;
     animation-fill-mode: both;
+    width: 50rem;
+
+    @include mixins.mobile {
+      width: 20rem;
+    }
+  }
+
+  &-crown {
+    margin-left: 48rem;
+    animation-name: fall-down;
+    animation-delay: 2s;
+    animation-duration: 3.7s;
+    animation-fill-mode: both;
+    position: absolute;
+    width: 14rem;
+    z-index: -1;
+    margin-top: -6rem;
+
+    @include mixins.mobile {
+      width: 6rem;
+      margin-top: -2.5rem;
+      margin-left: 19rem;
+    }
+  }
+}
+
+@keyframes fall-down {
+  0% {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translateY(1rem) rotate(20deg);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(50rem);
   }
 }
 

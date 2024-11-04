@@ -21,7 +21,10 @@ const doneTyping = computed(() => gameStore.doneTyping)
     <div class="game-page-input">
       <div class="game-page-input-tags">
         <words-per-minute class="game-page-input-tags-wpm" />
-        <leave-game class="game-page-input-tags-leave" />
+        <leave-game
+          class="game-page-input-tags-leave"
+          :class="doneTyping ? '' : 'game-page-input-tags-leave-fixed'"
+        />
       </div>
       <typing-form v-if="!doneTyping" />
     </div>
@@ -38,19 +41,24 @@ const doneTyping = computed(() => gameStore.doneTyping)
   align-items: center;
   justify-content: center;
   gap: 4rem;
+  height: 100%;
 
   &-input {
     display: flex;
+    align-items: center;
+    justify-content: center;
 
     &-tags {
       margin: 1rem 1rem 1rem 0;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      gap: 1rem;
 
-      &-leave {
-        width: 100%;
-        margin-top: 1rem;
+      &-leave-fixed {
+        position: fixed;
+        left: 2rem;
+        bottom: 2rem;
       }
     }
   }

@@ -33,7 +33,11 @@ onMounted(() => {
 <template>
   <div>
     <form ref="form" @submit="submitForm" @keyup="submitIfSpace">
-      <text-input ref="input" v-model="word" />
+      <text-input
+        ref="input"
+        v-model="word"
+        placeholder="Type the words here"
+      />
     </form>
   </div>
 </template>

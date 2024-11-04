@@ -16,41 +16,38 @@ defineExpose({ focus })
 </script>
 
 <template>
-  <div class="input-container">
-    <input
-      ref="input"
-      type="text"
-      :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
-      class="custom-input"
-    />
-  </div>
+  <input
+    ref="input"
+    type="text"
+    v-bind="$attrs"
+    :value="modelValue"
+    @input="$emit('update:modelValue', $event.target.value)"
+    class="custom-input"
+  />
 </template>
 
 <style scoped lang="scss">
-@import '@/assets/mixins';
-
-.input-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+@use '@/assets/styles/variables';
+@use '@/assets/styles/mixins';
 
 .custom-input {
-  padding: 3rem 5rem;
-  width: 100%;
+  padding: 1.5rem 3rem;
   border: none;
   border-radius: 3rem;
-  background: #ffffff;
-  box-shadow:
-    20px 20px 60px #d9d9d9,
-    -20px -20px 60px #ffffff;
+  background: variables.$background;
+  box-shadow: variables.$neumorphism;
   font-size: 3rem;
   transition: 0.3s;
   font-weight: 500;
 
-  @include mobile {
+  &::placeholder {
+    color: variables.$text-placeholder;
+    font-weight: normal;
+  }
+
+  @include mixins.mobile {
     padding: 1rem;
+    font-size: 1rem;
   }
 }
 

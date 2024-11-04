@@ -9,16 +9,19 @@ const gameStore = useGameStore()
 </template>
 
 <style scoped lang="scss">
+@use '@/assets/styles/variables';
+
 .leave-game {
-  background: rgb(255 0 0 / 50%);
-  border-radius: 1rem;
-  padding: 1rem 2rem;
-  font-size: 1.4rem;
-  font-weight: bold;
+  background: variables.$leave-button;
+  color: variables.$leave-button-color;
+  border-radius: 3rem;
+  border: none;
+  font-weight: 500;
+  padding: 1.5rem;
+  font-size: 1.3rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
 
   &:hover {
     cursor: pointer;

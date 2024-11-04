@@ -1,16 +1,14 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { useGameStore } from '@/stores/game.js'
 import { storeToRefs } from 'pinia'
 import GameInfo from '@/components/gameInfo.vue'
+import CountDown from '@/components/countDown.vue'
+import WaitingForPlayers from '@/components/waitingForPlayers.vue'
 
 const gameStore = useGameStore()
 const { gameStart } = storeToRefs(gameStore)
 const countdown = ref(null)
-
-const countdownText = computed(() =>
-  countdown.value ? `${countdown.value} seconds` : '',
-)
 
 const setCountdown = () => {
   if (!gameStart) {
@@ -30,10 +28,8 @@ onUnmounted(() => clearInterval(interval))
 <template>
   <div class="wait-page">
     <div class="wait-page-text">
-      <h1 class="title" v-if="gameStart">
-        Game is starting in {{ countdownText }}
-      </h1>
-      <h1 class="title" v-else>Waiting for other players</h1>
+      <count-down v-if="gameStart" :countdown-text="countdown" />
+      <waiting-for-players v-else />
     </div>
     <game-info />
   </div>
@@ -41,6 +37,12 @@ onUnmounted(() => clearInterval(interval))
 
 <style scoped lang="scss">
 .wait-page {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
   &-text {
     margin-bottom: 3rem;
   }

@@ -7,12 +7,14 @@
 </template>
 
 <style scoped lang="scss">
-@import '@/assets/mixins';
+@use '@/assets/styles/mixins';
 
 .page {
   padding: 10rem;
+  box-sizing: border-box;
+  height: 100%;
 
-  @include mobile {
+  @include mixins.mobile {
     padding: 1rem;
   }
 }

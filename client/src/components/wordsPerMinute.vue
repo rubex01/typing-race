@@ -36,12 +36,15 @@ watch(doneTyping, newValue => {
 </template>
 
 <style scoped lang="scss">
+@use '@/assets/styles/variables';
+
 .words-per-minute {
-  background: rgb(66 255 66 / 50%);
-  border-radius: 1rem;
-  padding: 1rem 2rem;
-  font-size: 1.4rem;
-  font-weight: bold;
+  background: variables.$button;
+  color: variables.$button-color;
+  border-radius: 3rem;
+  font-weight: 500;
+  padding: 1.5rem;
+  font-size: 1.3rem;
   display: flex;
   align-items: center;
   justify-content: center;

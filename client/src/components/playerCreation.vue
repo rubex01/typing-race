@@ -15,11 +15,21 @@ const savePlayer = event => {
 </script>
 
 <template>
-  <div>
-    <form @submit="savePlayer">
-      <text-input v-model="name" />
-    </form>
-  </div>
+  <form @submit="savePlayer" class="player-creation">
+    <text-input
+      v-model="name"
+      placeholder="Your player name"
+      required="required"
+      class="player-creation-input"
+    />
+  </form>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.player-creation {
+  &-input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+</style>

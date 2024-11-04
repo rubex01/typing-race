@@ -1,19 +1,33 @@
 <script setup>
 import PlayerCreation from '@/components/playerCreation.vue'
+import profile from '@/assets/images/profile.png'
 </script>
 
 <template>
-  <div>
-    <div class="start-page">
-      <h1 class="title">Your</h1>
-      <h1 class="title">Player Tag</h1>
-    </div>
-    <player-creation />
+  <div class="start-page">
+    <img :src="profile" class="start-page-image" alt="profile image" />
+    <player-creation class="start-page-player-creation" />
   </div>
 </template>
 
 <style scoped lang="scss">
+@use '@/assets/styles/mixins';
+
 .start-page {
-  margin-bottom: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  box-sizing: border-box;
+
+  &-player-creation {
+    padding: 1.8rem 0 1.8rem 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  @include mixins.mobile {
+    flex-direction: column;
+  }
 }
 </style>

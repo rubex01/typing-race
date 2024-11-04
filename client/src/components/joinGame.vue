@@ -18,20 +18,44 @@ const joinGame = event => {
 </script>
 
 <template>
-  <div>
-    <form @submit="joinGame" class="form">
-      <text-input class="input" v-model="gameId" required="required" />
-      <default-button type="submit">join</default-button>
+  <div class="join-form">
+    <form @submit="joinGame" class="join-game-form">
+      <text-input
+        class="join-game-form-input"
+        v-model="gameId"
+        required="required"
+        placeholder="Game id"
+      />
+      <default-button type="submit" class="join-game-form-button"
+        >Join</default-button
+      >
     </form>
   </div>
 </template>
 
 <style scoped lang="scss">
-.form {
-  display: flex;
-}
+@use '@/assets/styles/mixins';
 
-.input {
-  margin-right: 4rem;
+.join-game {
+  &-form {
+    display: flex;
+
+    &-input {
+      padding-right: 12rem;
+
+      @include mixins.mobile {
+        width: 5rem;
+      }
+
+      &:hover {
+        transform: none;
+      }
+    }
+
+    &-button {
+      margin-left: -12rem;
+      width: 12rem;
+    }
+  }
 }
 </style>

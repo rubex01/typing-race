@@ -50,10 +50,12 @@ const playersThatAreFurther = computed(() => {
 </template>
 
 <style scoped lang="scss">
+@use '@/assets/styles/variables';
+
 .typing-display {
   flex-wrap: wrap;
   display: flex;
-  gap: 3rem;
+  gap: 2rem;
   position: relative;
   overflow: hidden;
 
@@ -63,8 +65,8 @@ const playersThatAreFurther = computed(() => {
 
   &-bar {
     width: 100%;
-    height: 5px;
-    background: rgb(255, 0, 0, 0.5);
+    height: 0.5rem;
+    background: variables.$typing-bar;
     animation: slide;
     animation-duration: 0.5s;
     animation-fill-mode: both;
@@ -72,10 +74,17 @@ const playersThatAreFurther = computed(() => {
 
   &-player-tag {
     position: absolute;
-    background: white;
-    border: 1px solid black;
-    padding: 0.3rem;
-    border-radius: 0.3rem;
+    background: variables.$typing-player;
+    margin-top: 0.3rem;
+    max-width: 6rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: #ffffff;
+    padding: 0.3rem 0.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    font-weight: 500;
 
     &:hover {
       z-index: 1;
