@@ -12,7 +12,7 @@ const wordsPerMinute = ref(0)
 const calculateWordsPerMinute = () => {
   const secondsPassed = (new Date() - gameStart.value) / 1000
   wordsPerMinute.value = Math.floor(
-    (letterIndex.value / 5 / secondsPassed) * 60,
+    ((letterIndex.value / secondsPassed) * 60) / 5,
   )
 }
 

@@ -11,7 +11,7 @@ export const WordRepository = () => {
 
   const loadWords = () => {
     try {
-      const data = fs.readFileSync(path.join(__dirname, '../storage', 'words.txt'), 'utf-8');
+      const data = fs.readFileSync(path.join(__dirname, '../storage', 'words_2.txt'), 'utf-8');
       words = data.split(/\r?\n/);
     } catch (error) {
       console.error('Error reading words file:', error);
