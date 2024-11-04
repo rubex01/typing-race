@@ -3,6 +3,10 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useGameStore } from '@/stores/game.js'
 import { storeToRefs } from 'pinia'
 
+const WORD_LENGTH = 5
+const SPACES_PER_WORD = 1
+const SECONDS_IN_MINUTE = 60
+
 const gameStore = useGameStore()
 const { letterIndex, gameStart } = storeToRefs(gameStore)
 
@@ -12,7 +16,8 @@ const wordsPerMinute = ref(0)
 const calculateWordsPerMinute = () => {
   const secondsPassed = (new Date() - gameStart.value) / 1000
   wordsPerMinute.value = Math.floor(
-    ((letterIndex.value / secondsPassed) * 60) / 5,
+    ((letterIndex.value / secondsPassed) * SECONDS_IN_MINUTE) /
+      (WORD_LENGTH - SPACES_PER_WORD),
   )
 }
 
