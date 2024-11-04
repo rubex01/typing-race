@@ -2,7 +2,7 @@
 import clock from '@/assets/images/clock.png'
 
 defineProps({
-  countdownText: String,
+  countdownText: Number,
 })
 </script>
 

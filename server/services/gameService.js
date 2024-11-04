@@ -9,7 +9,6 @@ const GameService = (io) => {
 
     const playerJoinedRoom = (socket, gameId, data) => {
         const game = getOrCreateGameForRoom(gameId);
-        console.log(gameId, data, 'joinroom')
         if (game.startTime !== null && game.startTime <= new Date()) {
             return;
         }
