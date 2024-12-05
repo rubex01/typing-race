@@ -2,14 +2,25 @@ version: '3'
 
 services:
 
-  socketio:
+  server:
     image: node:20
     ports:
       - '3000:3000'
     working_dir: /app
     volumes:
       - ./server:/app
-    command: node server.js
+    command: npm run dev
+
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: typing_race
+      POSTGRES_USER: typing_race
+      POSTGRES_PASSWORD: typing_race
+    ports:
+      - "5432:5432"
 
   app:
     image: node:20
@@ -21,3 +32,6 @@ services:
     volumes:
       - ./client:/app
     command: npm run dev -- --host
+
+volumes:
+  postgres_data:
