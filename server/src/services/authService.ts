@@ -1,16 +1,17 @@
 import {inject, injectable} from "tsyringe";
-import types from "@/types";
+import symbols from "@/symbols";
 import {playerRepositoryInterface} from "@/repositories/contracts/playerRepositoryInterface";
 import {comparePassword} from "@/helpers/comparePassword";
 import {User} from "@prisma/client";
-import {generateJWT} from "@/helpers/jwt";
+import {generateJWT, verifyJWT} from "@/helpers/jwt";
+import {AuthRequest} from "@/middleware/authorization";
 
 
 @injectable()
 export class authService {
 
     constructor(
-        @inject(types.playerRepositoryInterface) private playerRepository: playerRepositoryInterface
+        @inject(symbols.playerRepositoryInterface) private playerRepository: playerRepositoryInterface
     ) {}
 
     authenticate = async (email: string, password: string) => {
@@ -21,18 +22,22 @@ export class authService {
 
         const success = await comparePassword(password, user.password);
         if (success) {
-            return user.id;
+            return this.createJWTForUserId(user.id);
         }
 
         return null;
     }
 
-    createJWTForUserId = async (userId: number) => {
-        const user = await this.playerRepository.getById(userId);
-        if (!user) {
-            return null;
+    authorize = (token: string) => {
+        const decodedData = verifyJWT(token);
+        if (!decodedData?.id) {
+            throw new Error('Token invalid');
         }
 
-        return generateJWT({ id: user.id, email: user.email });
+        return this.playerRepository.getById(decodedData.id);
+    }
+
+    createJWTForUserId = async (userId: number) => {
+        return generateJWT({ id: userId });
     }
 }

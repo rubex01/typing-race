@@ -1,13 +1,13 @@
 import {playerRepositoryInterface, storePlayerData} from '../contracts/playerRepositoryInterface'
 import {PrismaClient} from '@prisma/client'
 import {inject, injectable} from "tsyringe";
-import types from '@/types'
+import symbols from '@/symbols'
 import {hashPassword} from "@/helpers/hashPassword";
 
 @injectable()
 export class playerRepository implements playerRepositoryInterface {
     constructor(
-        @inject(types.prismaClient) private readonly prisma: PrismaClient,
+        @inject(symbols.prismaClient) private readonly prisma: PrismaClient,
     ) {}
 
     storePlayer =  async (data: storePlayerData) => {

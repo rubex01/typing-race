@@ -1,15 +1,20 @@
 import { Request, Response } from 'express';
 import {playerRepositoryInterface} from "@/repositories/contracts/playerRepositoryInterface";
 import {injectable, inject} from "tsyringe";
-import types from "@/types";
+import symbols from "@/symbols";
 import {authService} from "@/services/authService";
+import {AuthRequest} from "@/middleware/authorization";
+import {gameRepositoryInterface} from "@/repositories/contracts/gameRepositoryInterface";
+import {gameRepository} from "@/repositories/state/gameRepository";
+import {Game} from "@/types/game";
 
 @injectable()
 export class playerController {
 
     constructor(
-        @inject(types.playerRepositoryInterface) private playerRepository: playerRepositoryInterface,
-        @inject(types.authService) private authService: authService,
+        @inject(symbols.playerRepositoryInterface) private playerRepository: playerRepositoryInterface,
+        @inject(symbols.authService) private authService: authService,
+        @inject(symbols.gameRepositoryInterface) private gameRepository: gameRepositoryInterface,
     ) {}
 
     store = async (request: Request, response: Response) => {
@@ -21,15 +26,27 @@ export class playerController {
         response.status(200).json(user)
     }
 
+    me = async (request: AuthRequest, response: Response) => {
+        response.status(200).json({
+            ...request.user
+        })
+    }
+
     authenticate = async (request: Request, response: Response) => {
-        const userId = await this.authService.authenticate(request.body.email, request.body.password);
-        if (!userId) {
+        const token = await this.authService.authenticate(request.body.email, request.body.password);
+        if (!token) {
             return response.status(401).json({
                 message: 'Authentication failed',
             })
         }
 
-        const token = await this.authService.createJWTForUserId(userId);
         response.status(200).json({token})
+    }
+
+    test = async (request: AuthRequest, response: Response) => {
+        response.status(200).json({
+            message: 'You are authorized',
+            user: request.user
+        })
     }
 }
