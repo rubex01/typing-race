@@ -1,16 +1,16 @@
 import {injectable} from "tsyringe";
-import {Game} from "@/types/game";
 import {gameStateInterface} from "@/states/contracts/gameStateInterface";
+import {game} from "@/models/game";
 
 @injectable()
 export class gameState implements gameStateInterface {
-    private state: Map<string, Game> = new Map();
+    private state: Map<string, game> = new Map();
 
-    save(gameId: string, game: Game): void {
+    save(gameId: string, game: game): void {
         this.state.set(gameId, game);
     }
 
-    get(gameId: string): Game | undefined {
+    get(gameId: string): game | undefined {
         return this.state.get(gameId);
     }
 
@@ -22,7 +22,7 @@ export class gameState implements gameStateInterface {
         return this.state.has(gameId);
     }
 
-    getAll(): Game[] {
+    getAll(): game[] {
         return Array.from(this.state.values());
     }
 

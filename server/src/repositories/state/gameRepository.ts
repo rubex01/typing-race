@@ -1,19 +1,22 @@
 import {gameRepositoryInterface} from "@/repositories/contracts/gameRepositoryInterface";
 import {inject, injectable} from "tsyringe";
-import {Game} from "@/types/game";
 import {gameStateInterface} from "@/states/contracts/gameStateInterface";
+import {game} from "@/models/game";
 import symbols from "@/symbols";
 
 @injectable()
 export class gameRepository implements gameRepositoryInterface {
-    constructor(@inject(symbols.gameStateInterface) private gameState: gameStateInterface) {}
 
-    store = async (game: Game): Promise<Game> => {
-        this.gameState.save(game.gameId, game);
+    constructor(
+        @inject(symbols.gameStateInterface) private gameState: gameStateInterface
+    ) {}
+
+    store = async (game: game): Promise<game> => {
+        this.gameState.save(game.getGameId(), game);
         return Promise.resolve(game);
     }
 
-    getById = (gameId: string): Promise<Game | undefined> => {
+    getById = (gameId: string): Promise<game | undefined> => {
         const game = this.gameState.get(gameId);
         return Promise.resolve(game);
     }
@@ -28,7 +31,7 @@ export class gameRepository implements gameRepositoryInterface {
         return Promise.resolve(exists)
     }
 
-    getAll = (): Promise<Game[]> => {
+    getAll = (): Promise<game[]> => {
         const games = this.gameState.getAll();
         return Promise.resolve(games);
     }

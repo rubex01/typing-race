@@ -1,10 +1,10 @@
-import {Game} from "@/types/game";
+import {game} from "@/models/game";
 
 export interface gameStateInterface {
-    save(gameId: string, game: Game): void;
-    get(gameId: string): Game | undefined;
+    save(gameId: string, game: game): void;
+    get(gameId: string): game | undefined;
     remove(gameId: string): void;
     exists(gameId: string): boolean;
-    getAll(): Game[];
+    getAll(): game[];
     clear(): void;
 }

@@ -1,24 +1,20 @@
 import { Request, Response } from 'express';
-import {playerRepositoryInterface} from "@/repositories/contracts/playerRepositoryInterface";
+import {userRepositoryInterface} from "@/repositories/contracts/userRepositoryInterface";
 import {injectable, inject} from "tsyringe";
 import symbols from "@/symbols";
 import {authService} from "@/services/authService";
-import {AuthRequest} from "@/middleware/authorization";
-import {gameRepositoryInterface} from "@/repositories/contracts/gameRepositoryInterface";
-import {gameRepository} from "@/repositories/state/gameRepository";
-import {Game} from "@/types/game";
+import {userRequest} from "@/middleware/authorization";
 
 @injectable()
-export class playerController {
+export class userController {
 
     constructor(
-        @inject(symbols.playerRepositoryInterface) private playerRepository: playerRepositoryInterface,
+        @inject(symbols.userRepositoryInterface) private userRepository: userRepositoryInterface,
         @inject(symbols.authService) private authService: authService,
-        @inject(symbols.gameRepositoryInterface) private gameRepository: gameRepositoryInterface,
     ) {}
 
     store = async (request: Request, response: Response) => {
-        const user = await this.playerRepository.storePlayer({
+        const user = await this.userRepository.storePlayer({
             name: request.body.name,
             email: request.body.email,
             password: request.body.password,
@@ -26,7 +22,7 @@ export class playerController {
         response.status(200).json(user)
     }
 
-    me = async (request: AuthRequest, response: Response) => {
+    me = async (request: userRequest, response: Response) => {
         response.status(200).json({
             ...request.user
         })
@@ -41,12 +37,5 @@ export class playerController {
         }
 
         response.status(200).json({token})
-    }
-
-    test = async (request: AuthRequest, response: Response) => {
-        response.status(200).json({
-            message: 'You are authorized',
-            user: request.user
-        })
     }
 }

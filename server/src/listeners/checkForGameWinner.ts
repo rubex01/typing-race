@@ -1,0 +1,24 @@
+import {player} from "@/models/player";
+import {gameRepositoryInterface} from "@/repositories/contracts/gameRepositoryInterface";
+import container from "@/container";
+import {gamePlayService} from "@/services/gamePlayService";
+import symbols from "@/symbols";
+
+export const checkForGameWinner = async (player: player) => {
+
+    const gameId = player.getGameId();
+
+    const gameRepository = container.resolve<gameRepositoryInterface>(symbols.gameRepositoryInterface);
+    const game = await gameRepository.getById(gameId);
+    if (!game) {
+        return;
+    }
+
+    if (player.getLetterIndex() < game.getFinalLetterIndex()) {
+        return;
+    }
+
+    const service = container.resolve(gamePlayService);
+    game.setWinner(player);
+    await service.announceWinner(game);
+}

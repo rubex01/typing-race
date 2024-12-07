@@ -1,36 +1,34 @@
 import container from "@/container";
-import { Game } from "@/types/game";
 import {gameStateInterface} from "@/states/contracts/gameStateInterface";
-import symbols from "@/symbols";
 import {gameState} from "@/states/gameState";
+import {game} from "@/models/game";
 
 describe('gameState Test Suite', () => {
     let state: gameStateInterface;
-    let game: Game;
+    let testGame: game;
 
     beforeEach(() => {
         state = container.resolve(gameState);
-        game = {
-            gameId: '123',
-            players: new Map(),
-            startTime: new Date(),
-            words: ['hello', 'world'],
-            finalLetterIndex: 0,
-            winner: null,
-            destructTimer: null,
-        };
+        testGame = new game(
+            '123',
+            new Map(),
+            new Date(),
+            ['hello', 'world'],
+            0,
+            null,
+        );
     });
 
     it('should save a game', () => {
-        state.save(game.gameId, game);
-        const savedGame = state.get(game.gameId);
-        expect(savedGame).toEqual(game);
+        state.save(testGame.getGameId(), testGame);
+        const savedGame = state.get(testGame.getGameId());
+        expect(savedGame).toEqual(testGame);
     });
 
     it('should get a game by ID', () => {
-        state.save(game.gameId, game);
-        const retrievedGame = state.get(game.gameId);
-        expect(retrievedGame).toEqual(game);
+        state.save(testGame.getGameId(), testGame);
+        const retrievedGame = state.get(testGame.getGameId());
+        expect(retrievedGame).toEqual(testGame);
     });
 
     it('should return undefined for a non-existent game', () => {
@@ -39,15 +37,15 @@ describe('gameState Test Suite', () => {
     });
 
     it('should remove a game', () => {
-        state.save(game.gameId, game);
-        state.remove(game.gameId);
-        const retrievedGame = state.get(game.gameId);
+        state.save(testGame.getGameId(), testGame);
+        state.remove(testGame.getGameId());
+        const retrievedGame = state.get(testGame.getGameId());
         expect(retrievedGame).toBeUndefined();
     });
 
     it('should check if a game exists', () => {
-        state.save(game.gameId, game);
-        const exists = state.exists(game.gameId);
+        state.save(testGame.getGameId(), testGame);
+        const exists = state.exists(testGame.getGameId());
         expect(exists).toBe(true);
     });
 
@@ -57,25 +55,24 @@ describe('gameState Test Suite', () => {
     });
 
     it('should get all games', () => {
-        const game2: Game = {
-            gameId: '456',
-            players: new Map(),
-            startTime: new Date(),
-            words: ['foo', 'bar'],
-            finalLetterIndex: 1,
-            winner: null,
-            destructTimer: null,
-        };
+        const game2 = new game(
+            '456',
+            new Map(),
+            new Date(),
+            ['foo', 'bar'],
+            1,
+            null,
+        );
 
-        state.save(game.gameId, game);
-        state.save(game2.gameId, game2);
+        state.save(testGame.getGameId(), testGame);
+        state.save(game2.getGameId(), game2);
 
         const allGames = state.getAll();
-        expect(allGames).toEqual([game, game2]);
+        expect(allGames).toEqual([testGame, game2]);
     });
 
     it('should clear all games', () => {
-        state.save(game.gameId, game);
+        state.save(testGame.getGameId(), testGame);
         state.clear();
         const allGames = state.getAll();
         expect(allGames).toEqual([]);

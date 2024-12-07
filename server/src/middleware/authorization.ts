@@ -3,7 +3,7 @@ import {User} from "@prisma/client";
 import {container} from "tsyringe";
 import {authService} from "@/services/authService";
 
-export interface AuthRequest extends Request {
+export interface userRequest extends Request {
     user: User
 }
 
@@ -26,7 +26,7 @@ export const authorize = async (request: Request, response: Response, next: Next
             return authenticationFailed(response);
         }
 
-        (request as AuthRequest).user = user;
+        (request as userRequest).user = user;
         next()
     } catch {
         return authenticationFailed(response);

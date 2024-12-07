@@ -1,10 +1,10 @@
-import {Game} from "@/types/game";
+import {game} from "@/models/game";
 
 export interface gameRepositoryInterface {
-    store(game: Game): Promise<Game>;
-    getById(gameId: string): Promise<Game|undefined>;
+    store(game: game): Promise<game>;
+    getById(gameId: string): Promise<game|undefined>;
     destroy(gameId: string): Promise<void>;
     exists(gameId: string): Promise<boolean>;
-    getAll(): Promise<Game[]>;
+    getAll(): Promise<game[]>;
     clear(gameId: string): Promise<void>;
 }

@@ -1,34 +1,33 @@
 import container from "@/container";
-import { Game } from "@/types/game";
 import {gameRepository} from "@/repositories/state/gameRepository";
+import {game} from "@/models/game";
 
 describe('Game repository test', () => {
     let repository: gameRepository;
-    let game: Game;
+    let testGame: game;
 
     beforeEach(() => {
         repository = container.resolve(gameRepository);
 
-        game = {
-            gameId: '123',
-            players: new Map(),
-            startTime: new Date(),
-            words: ['hello', 'world'],
-            finalLetterIndex: 0,
-            winner: null,
-            destructTimer: null,
-        };
+        testGame = new game(
+            '123',
+            new Map(),
+            new Date(),
+            ['hello', 'world'],
+            0,
+            null,
+        );
     });
 
     it('should store a game', async () => {
-        const result = await repository.store(game);
-        expect(result).toEqual(game);
+        const result = await repository.store(testGame);
+        expect(result).toEqual(testGame);
     });
 
     it('should get a game by ID', async () => {
-        await repository.store(game);
-        const result = await repository.getById(game.gameId);
-        expect(result).toEqual(game);
+        await repository.store(testGame);
+        const result = await repository.getById(testGame.getGameId());
+        expect(result).toEqual(testGame);
     });
 
     it('should return undefined for a non-existing game', async () => {
@@ -37,15 +36,15 @@ describe('Game repository test', () => {
     });
 
     it('should destroy a game', async () => {
-        await repository.store(game);
-        await repository.destroy(game.gameId);
-        const result = await repository.getById(game.gameId);
+        await repository.store(testGame);
+        await repository.destroy(testGame.getGameId());
+        const result = await repository.getById(testGame.getGameId());
         expect(result).toBeUndefined();
     });
 
     it('should check if a game exists', async () => {
-        await repository.store(game);
-        const exists = await repository.exists(game.gameId);
+        await repository.store(testGame);
+        const exists = await repository.exists(testGame.getGameId());
         expect(exists).toBe(true);
     });
 
@@ -55,25 +54,24 @@ describe('Game repository test', () => {
     });
 
     it('should get all games', async () => {
-        const game2: Game = {
-            gameId: '456',
-            players: new Map(),
-            startTime: new Date(),
-            words: ['foo', 'bar'],
-            finalLetterIndex: 1,
-            winner: null,
-            destructTimer: null,
-        };
+        const game2 = new game(
+            '456',
+            new Map(),
+            new Date(),
+            ['foo', 'bar'],
+            1,
+            null,
+        );
 
-        await repository.store(game);
+        await repository.store(testGame);
         await repository.store(game2);
 
         const result = await repository.getAll();
-        expect(result).toEqual([game, game2]);
+        expect(result).toEqual([testGame, game2]);
     });
 
     it('should clear all games', async () => {
-        await repository.store(game);
+        await repository.store(testGame);
         await repository.clear();
         const result = await repository.getAll();
         expect(result).toEqual([]);

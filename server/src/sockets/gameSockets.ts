@@ -1,25 +1,27 @@
 import { ioServer } from "@/server";
 import container from "../container";
-import {gameService} from "@/services/gameService";
+import {gameRoomService} from "@/services/gameRoomService";
+import {gamePlayService} from "@/services/gamePlayService";
 
 export const gameSockets = () => {
-    const service = container.resolve(gameService);
+    const roomService = container.resolve(gameRoomService);
+    const playService = container.resolve(gamePlayService);
 
     ioServer.on('connection', (socket) => {
-        socket.on('join', (room, data) => {
-            service.playerJoinedRoom(socket, room, data);
+        socket.on('join', async (gameId, data) => {
+            await roomService.joinGame(gameId, socket.id, data);
 
-            socket.on('disconnect', () => {
-                service.playerDisconnected(socket, room);
+            socket.on('disconnect', async () => {
+                await roomService.leaveGame(socket.id)
             });
         });
 
-        socket.on('leave', (gameId) => {
-            service.playerDisconnected(socket, gameId);
+        socket.on('leave', async () => {
+            await roomService.leaveGame(socket.id)
         });
 
-        socket.on('gameEvent', (gameId, data) => {
-            service.sendGameData(socket, gameId, data);
+        socket.on('gameEvent', async (gameId, data) => {
+            await playService.announceGameProgression(socket.id, gameId, data);
         });
     });
 }
