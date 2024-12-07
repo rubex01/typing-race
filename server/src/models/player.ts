@@ -2,6 +2,7 @@ import {eventListenerInterface} from "@/contracts/eventListenerInterface";
 import {checkToStartGame} from "@/listeners/checkToStartGame";
 import {checkForGameWinner} from "@/listeners/checkForGameWinner";
 import {checkToRemoveGame} from "@/listeners/checkToRemoveGame";
+import {model} from "@/models/model";
 
 export class player extends model implements eventListenerInterface<player> {
 

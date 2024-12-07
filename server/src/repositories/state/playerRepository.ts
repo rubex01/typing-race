@@ -3,6 +3,7 @@ import {playerRepositoryInterface} from "@/repositories/contracts/playerReposito
 import {playerStateInterface} from "@/states/contracts/playerStateInterface";
 import {player} from "@/models/player";
 import symbols from "@/symbols";
+import {model} from "@/models/model";
 
 @injectable()
 export class playerRepository implements playerRepositoryInterface {

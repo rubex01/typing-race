@@ -1,6 +1,7 @@
 import {player} from "@/models/player";
+import {model} from "@/models/model";
 
-export class game extends model{
+export class game extends model {
 
     private finalLetterIndex: number = 0;
 
