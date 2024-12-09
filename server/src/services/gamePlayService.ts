@@ -39,18 +39,6 @@ export class gamePlayService {
         await this.playerRepository.updatePlayer(player);
     }
 
-    announceWinner = async (game: game) => {
-        const winnerPlayerId = game.getWinner()?.getPlayerId();
-        if (!winnerPlayerId) {
-            return;
-        }
-
-        this.socketService.emit(game.getGameId(), "gameWinner", {
-                winner: winnerPlayerId
-            },
-        );
-    }
-
     validateDataPackage = (game: game, player: player, data: gameProgressionData): boolean => {
         return (
             game.hasStarted() &&

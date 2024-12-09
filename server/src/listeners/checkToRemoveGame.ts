@@ -1,24 +1,9 @@
 import container from "@/container";
-import {gameRoomService} from "@/services/gameRoomService";
 import {player} from "@/models/player";
-import {playerRepositoryInterface} from "@/repositories/contracts/playerRepositoryInterface";
-import symbols from "@/symbols";
-import {gameRepositoryInterface} from "@/repositories/contracts/gameRepositoryInterface";
+import {gameRemovalService} from "@/services/gameRemovalService";
 
 export const checkToRemoveGame = async (player: player) => {
-    const playerRepository = container.resolve<playerRepositoryInterface>(symbols.playerRepositoryInterface);
-    const playerCount = await playerRepository.countPlayersForGameId(player.getGameId())
-
-    if (playerCount >= 1) {
-        return;
-    }
-
-    const gameRepository = container.resolve<gameRepositoryInterface>(symbols.gameRepositoryInterface);
-    const game = await gameRepository.getById(player.getGameId())
-    if (!game) {
-        return;
-    }
-
-    const service = container.resolve(gameRoomService);
-    await service.removeGame(game);
+    const gameId = player.getGameId();
+    const service = container.resolve(gameRemovalService);
+    await service.removeGameIfShouldRemove(gameId);
 }

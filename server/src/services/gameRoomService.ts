@@ -5,16 +5,16 @@ import {socketService} from "@/services/socketService";
 import {playerRepositoryInterface} from "@/repositories/contracts/playerRepositoryInterface";
 import {player} from "@/models/player";
 import symbols from "@/symbols";
+import {wordRepositoryInterface} from "@/repositories/contracts/wordRepositoryInterface";
 
 @injectable()
 export class gameRoomService {
-
-    private START_GAME_IN_SECONDS = 3;
 
     constructor(
         @inject(symbols.gameRepositoryInterface) private gameRepository: gameRepositoryInterface,
         @inject(symbols.playerRepositoryInterface) private playerRepository: playerRepositoryInterface,
         @inject(symbols.socketService) private socketService: socketService,
+        @inject(symbols.wordRepositoryInterface) private wordRepository: wordRepositoryInterface,
     ) {
     }
 
@@ -33,20 +33,6 @@ export class gameRoomService {
         await this.playerRepository.destroyBySocketId(socketId);
     }
 
-    startGame = (game: game) => {
-        const startTime = new Date(new Date().getTime() + (this.START_GAME_IN_SECONDS * 1000));
-        game.setStartTime(startTime)
-
-        this.socketService.emit(game.getGameId(), 'gameStart', {
-            startTime: game.getStartTime(),
-            words: game.getWords(),
-        });
-    }
-
-    removeGame = async (game: game) => {
-        await this.gameRepository.destroy(game.getGameId());
-    }
-
     getOrCreateGame = async (gameId: string) => {
         const game = await this.gameRepository.getById(gameId);
         if (game) {
@@ -57,7 +43,7 @@ export class gameRoomService {
     }
 
     createGame = async (gameId: string) => {
-        const words = ['hello', 'world', 'this', 'is', 'a', 'test'];
+        const words = await this.wordRepository.getRandomWords(50);
         const newGame = new game(
             gameId,
             null,

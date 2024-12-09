@@ -1,33 +1,33 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { wordRepositoryInterface } from '@/repositories/contracts/wordRepositoryInterface';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export const WordRepository = () => {
-    let words: string[] = [];
+export class wordRepository implements wordRepositoryInterface {
+    private words: string[] = [];
 
-    const loadWords = (): void => {
+    constructor() {
+        this.loadWords();
+    }
+
+    private loadWords = (): void => {
         try {
             const data = fs.readFileSync(path.join(__dirname, '../../storage', 'words_2.txt'), 'utf-8');
-            words = data.split(/\r?\n/);  // Split the file contents by newline
+            this.words = data.split(/\r?\n/);  // Split the file contents by newline
         } catch (error) {
             console.error('Error reading words file:', error);
         }
     };
-    loadWords();
 
-    const getRandomWords = (count: number): string[] => {
+    getRandomWords = (count: number): Promise<string[]> => {
         const randomWords: string[] = [];
         for (let i = 0; i < count; i++) {
-            const randomIndex = Math.floor(Math.random() * words.length);
-            randomWords.push(words[randomIndex]);
+            const randomIndex = Math.floor(Math.random() * this.words.length);
+            randomWords.push(this.words[randomIndex]);
         }
-        return randomWords;
+        return Promise.resolve(randomWords);
     };
-
-    return {
-        getRandomWords
-    };
-};
+}
