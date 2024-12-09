@@ -33,7 +33,6 @@ export class player extends model implements eventListenerInterface<player> {
     }
 
     emit(event: string): void {
-        console.log(`Emitting event: ${event}`);
         const listeners = this.eventListeners.get(event) || [];
         listeners.forEach(listener => listener(this));
     }

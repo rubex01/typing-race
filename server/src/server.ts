@@ -4,6 +4,7 @@ import {gameSockets} from './sockets/gameSockets';
 import apiRoutes from "./routes/api";
 import express from "express";
 import "./container";
+import cors from "cors";
 
 const app = express();
 export const server = createServer(app);
@@ -13,8 +14,10 @@ export const ioServer = new Server(server, {
     },
 });
 
+
 gameSockets();
 
+app.use(cors());
 app.use(express.json());
 app.use('/api', apiRoutes);
 

@@ -5,12 +5,11 @@ import {gamePlayService} from "@/services/gamePlayService";
 import symbols from "@/symbols";
 
 export const checkForGameWinner = async (player: player) => {
-
     const gameId = player.getGameId();
-
     const gameRepository = container.resolve<gameRepositoryInterface>(symbols.gameRepositoryInterface);
     const game = await gameRepository.getById(gameId);
-    if (!game) {
+
+    if (!game || null !== game.getWinner()) {
         return;
     }
 
@@ -20,5 +19,6 @@ export const checkForGameWinner = async (player: player) => {
 
     const service = container.resolve(gamePlayService);
     game.setWinner(player);
+    await gameRepository.update(game);
     await service.announceWinner(game);
 }

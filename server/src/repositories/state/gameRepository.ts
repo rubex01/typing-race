@@ -16,6 +16,11 @@ export class gameRepository implements gameRepositoryInterface {
         return Promise.resolve(game);
     }
 
+    update = async (game: game): Promise<game> => {
+        this.gameState.save(game.getGameId(), game);
+        return Promise.resolve(game);
+    }
+
     getById = (gameId: string): Promise<game | undefined> => {
         const game = this.gameState.get(gameId);
         return Promise.resolve(game);
