@@ -8,7 +8,9 @@
     "dev": "nodemon",
     "start": "node dist/server.js",
     "lint": "eslint",
-    "test": "vitest"
+    "test": "vitest",
+    "migrate": "prisma migrate deploy",
+    "generate": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^6.0.1",

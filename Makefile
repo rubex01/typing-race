@@ -17,6 +17,8 @@ init: destroy
 	docker stop typing-race-init || true
 	docker rm typing-race-init || true
 	docker compose up -d
+	docker compose exec -it server npm run migrate
+	docker compose exec -it server npm run generate
 
 destroy:
 	@echo "Stopping any running container..."
