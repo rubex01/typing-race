@@ -24,6 +24,8 @@ export class gameRoomService {
             return;
         }
 
+        console.log('joining game', gameId);
+
         this.socketService.join(socketId, gameId);
         const playerToAdd = new player(socketId, data.playerId, gameId);
         await this.playerRepository.storePlayer(playerToAdd);

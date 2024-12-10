@@ -10,6 +10,8 @@ services:
     volumes:
       - ./server:/app
     command: npm run dev
+    networks:
+      - typing-race
 
   db:
     image: postgres:15-alpine
@@ -21,17 +23,22 @@ services:
       POSTGRES_PASSWORD: typing_race
     ports:
       - "5432:5432"
+    networks:
+      - typing-race
 
   app:
     image: node:20
     ports:
       - '5173:5173'
     working_dir: /app
-    environment:
-      - VITE_SOCKET_URL=http://localhost:3000
     volumes:
       - ./client:/app
-    command: npm run dev -- --host
+    command: ${COMMAND:-npm run dev}
+    networks:
+        - typing-race
 
 volumes:
   postgres_data:
+
+networks:
+  typing-race:

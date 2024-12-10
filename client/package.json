@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
+    "dev:e2e": "vite --mode cypress --host",
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",

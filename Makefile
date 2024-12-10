@@ -1,25 +1,22 @@
-# Docker image
-NODE_IMAGE := node:20
-# Volumes
-CLIENT_VOLUME := $(shell pwd)/client:/client
-SERVER_VOLUME := $(shell pwd)/server:/server
-# Docker container name
-CONTAINER_NAME := node-container
-# Docker run command
-DOCKER_RUN := docker run --rm --user node -v $(CLIENT_VOLUME) -v $(SERVER_VOLUME) --name $(CONTAINER_NAME) -w /client -d $(NODE_IMAGE)
-
 init: stop
-	@echo "Starting Docker container..."
-	$(DOCKER_RUN) tail -f /dev/null
-	@echo "Running npm install in /client..."
-	docker exec $(CONTAINER_NAME) bash -c "cd /client && npm install"
-	@echo "Running npm install in /server..."
-	docker exec $(CONTAINER_NAME) bash -c "cd /server && npm install"
-	@echo "Starting containers with docker-compose..."
+	@echo "Initializing project..."
+	docker run \
+      --rm \
+      --user node \
+      --volume ./client:/client \
+      --volume ./server:/server \
+      --name typing-race-init \
+      --workdir /client \
+      --detach \
+      node:20 \
+      tail -f /dev/null
+	docker exec typing-race-init bash -c "cd /client && [ -f .env ] || cp .env.example .env"
+	docker exec typing-race-init bash -c "cd /server && [ -f .env ] || cp .env.example .env"
+	docker exec typing-race-init bash -c "cd /client && npm install"
+	docker exec typing-race-init bash -c "cd /server && npm install"
+	docker stop typing-race-init || true
+	docker rm typing-race-init || true
 	docker compose up -d
-	@echo "Stopping and removing the initialization container..."
-	docker stop $(CONTAINER_NAME) || true
-	docker rm $(CONTAINER_NAME) || true
 
 stop:
 	@echo "Stopping any running container..."
@@ -30,12 +27,20 @@ up:
 	docker compose up -d
 
 e2e:
-	docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d socketio app
-	docker-compose -f docker-compose.yml -f docker-compose.test.yml up cypress
-	docker-compose up -d
+	COMMAND='npm run dev:e2e' docker compose up -d
+	docker run --rm \
+	  --env CYPRESS_baseUrl=http://app:5173 \
+	  --volume ./client:/e2e \
+  	  --network typing-race_typing-race \
+	  --volume /tmp/.X11-unix:/tmp/.X11-unix \
+	  --workdir /e2e \
+	  --entrypoint cypress \
+	  --name cypress \
+	  cypress/included:latest run
 
 unit:
 	docker compose exec app npm run test
+	docker compose exec server npm run test
 
 ssh:
 	docker compose exec app /bin/bash

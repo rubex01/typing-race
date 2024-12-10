@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 describe('game page', () => {
   beforeEach(() => {
-    const socket = io('http://socketio:3000')
+    const socket = io('http://server:3000')
     const gameId = uuidv4();
     socket.emit('join', gameId, {playerId: uuidv4()})
 
