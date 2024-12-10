@@ -16,7 +16,7 @@ export class wordRepository implements wordRepositoryInterface {
     private loadWords = (): void => {
         try {
             const data = fs.readFileSync(path.join(__dirname, '../../storage', 'words_2.txt'), 'utf-8');
-            this.words = data.split(/\r?\n/);  // Split the file contents by newline
+            this.words = data.split(/\r?\n/);
         } catch (error) {
             console.error('Error reading words file:', error);
         }

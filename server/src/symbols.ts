@@ -1,4 +1,3 @@
-
 const symbols = {
     // repositories
     userRepositoryInterface: Symbol('userRepositoryInterface'),
@@ -11,11 +10,12 @@ const symbols = {
 
     // services
     authService: Symbol('authService'),
-    socketService: Symbol('socketService'),
+    socketServiceInterface: Symbol('socketServiceInterface'),
     gameRoomService: Symbol('gameRoomService'),
     gamePlayService: Symbol('gamePlayService'),
     gameStartService: Symbol('gameStartService'),
     gameRemovalService: Symbol('gameRemovalService'),
+    gameWinnerService: Symbol('gameWinnerService'),
 
     // other
     prismaClient: Symbol('prismaClient'),

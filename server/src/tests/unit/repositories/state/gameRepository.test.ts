@@ -1,6 +1,7 @@
+import { describe, it, expect, beforeEach } from 'vitest';
 import container from "@/container";
-import {gameRepository} from "@/repositories/state/gameRepository";
-import {game} from "@/models/game";
+import { gameRepository } from "@/repositories/state/gameRepository";
+import { game } from "@/models/game";
 
 describe('Game repository test', () => {
     let repository: gameRepository;
@@ -11,11 +12,8 @@ describe('Game repository test', () => {
 
         testGame = new game(
             '123',
-            new Map(),
             new Date(),
             ['hello', 'world'],
-            0,
-            null,
         );
     });
 
@@ -56,11 +54,8 @@ describe('Game repository test', () => {
     it('should get all games', async () => {
         const game2 = new game(
             '456',
-            new Map(),
             new Date(),
             ['foo', 'bar'],
-            1,
-            null,
         );
 
         await repository.store(testGame);

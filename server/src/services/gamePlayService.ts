@@ -1,10 +1,10 @@
 import {inject, injectable} from "tsyringe";
 import {gameRepositoryInterface} from "@/repositories/contracts/gameRepositoryInterface";
-import {socketService} from "@/services/socketService";
 import {game} from "@/models/game";
 import {playerRepositoryInterface} from "@/repositories/contracts/playerRepositoryInterface";
 import {player} from "@/models/player";
 import symbols from "@/symbols";
+import {socketServiceInterface} from "@/services/contracts/socketServiceInterface";
 
 type gameProgressionData = {
     letterIndex: number,
@@ -18,7 +18,7 @@ export class gamePlayService {
     constructor(
         @inject(symbols.gameRepositoryInterface) private gameRepository: gameRepositoryInterface,
         @inject(symbols.playerRepositoryInterface) private playerRepository: playerRepositoryInterface,
-        @inject(symbols.socketService) private socketService: socketService,
+        @inject(symbols.socketServiceInterface) private socketService: socketServiceInterface,
     ) {
     }
 

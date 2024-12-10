@@ -3,7 +3,7 @@ import { Server } from 'socket.io';
 import {gameSockets} from './sockets/gameSockets';
 import apiRoutes from "./routes/api";
 import express from "express";
-import "./container";
+import "@/container";
 import cors from "cors";
 
 const app = express();
@@ -14,15 +14,15 @@ export const ioServer = new Server(server, {
     },
 });
 
-
 gameSockets();
 
 app.use(cors());
 app.use(express.json());
 app.use('/api', apiRoutes);
 
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
-
+if (process.env.NODE_ENV !== 'test') {
+    const PORT = process.env.PORT || 3000;
+    server.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}

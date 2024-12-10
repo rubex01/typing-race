@@ -1,19 +1,17 @@
 import {inject, injectable} from "tsyringe";
 import Symbols from "@/symbols";
-import {socketService} from "@/services/socketService";
 import symbols from "@/symbols";
 import {gameRepositoryInterface} from "@/repositories/contracts/gameRepositoryInterface";
-import {playerRepositoryInterface} from "@/repositories/contracts/playerRepositoryInterface";
 import {game} from "@/models/game";
 import {player} from "@/models/player";
+import {socketServiceInterface} from "@/services/contracts/socketServiceInterface";
 
 @injectable()
 export class gameWinnerService {
 
     constructor(
-        @inject(Symbols.socketService) private socketService: socketService,
+        @inject(Symbols.socketServiceInterface) private socketService: socketServiceInterface,
         @inject(symbols.gameRepositoryInterface) private gameRepository: gameRepositoryInterface,
-        @inject(symbols.playerRepositoryInterface) private playerRepository: playerRepositoryInterface,
     ) {
     }
 

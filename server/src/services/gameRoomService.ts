@@ -1,19 +1,21 @@
 import {inject, injectable} from "tsyringe";
 import {gameRepositoryInterface} from "@/repositories/contracts/gameRepositoryInterface";
 import {game} from "@/models/game";
-import {socketService} from "@/services/socketService";
 import {playerRepositoryInterface} from "@/repositories/contracts/playerRepositoryInterface";
 import {player} from "@/models/player";
 import symbols from "@/symbols";
 import {wordRepositoryInterface} from "@/repositories/contracts/wordRepositoryInterface";
+import {socketServiceInterface} from "@/services/contracts/socketServiceInterface";
 
 @injectable()
 export class gameRoomService {
 
+    AMOUNT_OF_WORDS = 50;
+
     constructor(
         @inject(symbols.gameRepositoryInterface) private gameRepository: gameRepositoryInterface,
         @inject(symbols.playerRepositoryInterface) private playerRepository: playerRepositoryInterface,
-        @inject(symbols.socketService) private socketService: socketService,
+        @inject(symbols.socketServiceInterface) private socketService: socketServiceInterface,
         @inject(symbols.wordRepositoryInterface) private wordRepository: wordRepositoryInterface,
     ) {
     }
@@ -23,8 +25,6 @@ export class gameRoomService {
         if (gameToJoin.hasStarted()) {
             return;
         }
-
-        console.log('joining game', gameId);
 
         this.socketService.join(socketId, gameId);
         const playerToAdd = new player(socketId, data.playerId, gameId);
@@ -45,7 +45,7 @@ export class gameRoomService {
     }
 
     createGame = async (gameId: string) => {
-        const words = await this.wordRepository.getRandomWords(50);
+        const words = await this.wordRepository.getRandomWords(this.AMOUNT_OF_WORDS);
         const newGame = new game(
             gameId,
             null,

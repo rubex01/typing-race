@@ -2,9 +2,7 @@ import {inject, injectable} from "tsyringe";
 import symbols from "@/symbols";
 import {userRepositoryInterface} from "@/repositories/contracts/userRepositoryInterface";
 import {comparePassword} from "@/helpers/comparePassword";
-import {User} from "@prisma/client";
 import {generateJWT, verifyJWT} from "@/helpers/jwt";
-import {userRequest} from "@/middleware/authorization";
 
 
 @injectable()

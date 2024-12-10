@@ -3,7 +3,6 @@ import {userRepositoryInterface} from "@/repositories/contracts/userRepositoryIn
 import {injectable, inject} from "tsyringe";
 import symbols from "@/symbols";
 import {authService} from "@/services/authService";
-import {userRequest} from "@/middleware/authorization";
 
 @injectable()
 export class userController {
@@ -13,7 +12,7 @@ export class userController {
         @inject(symbols.authService) private authService: authService,
     ) {}
 
-    store = async (request: Request, response: Response) => {
+    store = async (request: Request, response: Response): Promise<void> => {
         const user = await this.userRepository.storePlayer({
             name: request.body.name,
             email: request.body.email,
@@ -22,16 +21,16 @@ export class userController {
         response.status(200).json(user)
     }
 
-    me = async (request: userRequest, response: Response) => {
+    me = async (request: Request, response: Response): Promise<void> => {
         response.status(200).json({
             ...request.user
         })
     }
 
-    authenticate = async (request: Request, response: Response) => {
+    authenticate = async (request: Request, response: Response): Promise<void> => {
         const token = await this.authService.authenticate(request.body.email, request.body.password);
         if (!token) {
-            return response.status(401).json({
+            response.status(401).json({
                 message: 'Authentication failed',
             })
         }

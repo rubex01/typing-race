@@ -1,4 +1,4 @@
-init: stop
+init: destroy
 	@echo "Initializing project..."
 	docker run \
       --rm \
@@ -18,13 +18,16 @@ init: stop
 	docker rm typing-race-init || true
 	docker compose up -d
 
-stop:
+destroy:
 	@echo "Stopping any running container..."
 	docker stop $(CONTAINER_NAME) || true
 	docker rm $(CONTAINER_NAME) || true
 
 up:
 	docker compose up -d
+
+stop:
+	docker compose stop
 
 e2e:
 	COMMAND='npm run dev:e2e' docker compose up -d
@@ -37,6 +40,7 @@ e2e:
 	  --entrypoint cypress \
 	  --name cypress \
 	  cypress/included:latest run
+	docker compose up -d
 
 unit:
 	docker compose exec app npm run test

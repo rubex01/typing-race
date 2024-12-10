@@ -1,21 +1,17 @@
 import container from "@/container";
-import {gameStateInterface} from "@/states/contracts/gameStateInterface";
 import {gameState} from "@/states/gameState";
 import {game} from "@/models/game";
 
 describe('gameState Test Suite', () => {
-    let state: gameStateInterface;
+    let state: gameState;
     let testGame: game;
 
     beforeEach(() => {
         state = container.resolve(gameState);
         testGame = new game(
             '123',
-            new Map(),
             new Date(),
             ['hello', 'world'],
-            0,
-            null,
         );
     });
 
@@ -57,11 +53,8 @@ describe('gameState Test Suite', () => {
     it('should get all games', () => {
         const game2 = new game(
             '456',
-            new Map(),
             new Date(),
             ['foo', 'bar'],
-            1,
-            null,
         );
 
         state.save(testGame.getGameId(), testGame);

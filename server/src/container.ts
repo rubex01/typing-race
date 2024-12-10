@@ -21,9 +21,11 @@ import {gameStartService} from "@/services/gameStartService";
 import {gameRemovalService} from "@/services/gameRemovalService";
 import {wordRepositoryInterface} from "@/repositories/contracts/wordRepositoryInterface";
 import {wordRepository} from "@/repositories/fileSystem/wordRepository";
+import {gameWinnerService} from "@/services/gameWinnerService";
+import {socketServiceInterface} from "@/services/contracts/socketServiceInterface";
 
 // Controllers
-container.register<userController>(symbols.userController, userController);
+container.registerSingleton<userController>(symbols.userController, userController);
 
 // Repositories
 container.registerSingleton<userRepositoryInterface>(symbols.userRepositoryInterface, userRepository);
@@ -33,11 +35,12 @@ container.registerSingleton<wordRepositoryInterface>(symbols.wordRepositoryInter
 
 // Services
 container.registerSingleton<authService>(symbols.authService, authService);
-container.registerSingleton<socketService>(symbols.socketService, socketService);
+container.registerSingleton<socketServiceInterface>(symbols.socketServiceInterface, socketService);
 container.registerSingleton<gameRoomService>(symbols.gameRoomService, gameRoomService);
 container.registerSingleton<gamePlayService>(symbols.gamePlayService, gamePlayService);
 container.registerSingleton<gameStartService>(symbols.gameStartService, gameStartService);
 container.registerSingleton<gameRemovalService>(symbols.gameRemovalService, gameRemovalService);
+container.registerSingleton<gameWinnerService>(symbols.gameWinnerService, gameWinnerService);
 
 // Other
 container.registerInstance<prismaType>(symbols.prismaClient, prisma);
