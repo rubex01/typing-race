@@ -2,9 +2,13 @@
 import { useGameStore } from '@/stores/game.js'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
+import {useSettingStore} from "@/stores/setting.js";
 
 const gameStore = useGameStore()
 const { words, gameState, letterIndex } = storeToRefs(gameStore)
+
+const settingsStore = useSettingStore()
+const { showOtherPlayerStatus } = storeToRefs(settingsStore)
 
 const wordsWithIndex = computed(() => {
   let cumulativeLength = 0
@@ -16,6 +20,9 @@ const wordsWithIndex = computed(() => {
 })
 
 const playersThatAreFurther = computed(() => {
+  if (!showOtherPlayerStatus.value) {
+    return []
+  }
   return gameState.value.filter(
     player => player.letterIndex > letterIndex.value,
   )
@@ -98,6 +105,12 @@ const playersThatAreFurther = computed(() => {
   }
   100% {
     width: 100%;
+  }
+}
+
+@keyframes textclip {
+  to {
+    background-position: 200% center;
   }
 }
 </style>

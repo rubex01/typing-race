@@ -50,3 +50,6 @@ unit:
 
 ssh:
 	docker compose exec app /bin/bash
+
+migrate:
+	docker compose exec server npm run migrate

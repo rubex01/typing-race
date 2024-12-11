@@ -1,15 +1,27 @@
-import { ioServer } from "@/server";
+import {ioServer} from "@/server";
 import container from "../container";
 import {gameRoomService} from "@/services/gameRoomService";
 import {gamePlayService} from "@/services/gamePlayService";
+import {authService} from "@/services/authService";
 
 export const gameSockets = () => {
     const roomService = container.resolve(gameRoomService);
     const playService = container.resolve(gamePlayService);
+    const authenticationService = container.resolve(authService);
+
+    ioServer.use(async (socket, next) => {
+        const token = socket.handshake.auth.token;
+        try {
+            socket.user = await authenticationService.authorize(token);
+        }
+        catch { /* empty */ }
+        next();
+    });
 
     ioServer.on('connection', (socket) => {
         socket.on('join', async (gameId, data) => {
-            await roomService.joinGame(gameId, socket.id, data);
+            // TODO: validation on data
+            await roomService.joinGame(gameId, socket.id, {...data, user: socket.user});
 
             socket.on('disconnect', async () => {
                 await roomService.leaveGame(socket.id)

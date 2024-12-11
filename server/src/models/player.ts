@@ -3,6 +3,8 @@ import {checkToStartGame} from "@/listeners/checkToStartGame";
 import {checkForGameWinner} from "@/listeners/checkForGameWinner";
 import {checkToRemoveGame} from "@/listeners/checkToRemoveGame";
 import {model} from "@/models/model";
+import {User} from "@prisma/client";
+import {checkToUpdateResults} from "@/listeners/checkToUpdateResults";
 
 export class player extends model implements eventListenerInterface<player> {
 
@@ -14,6 +16,7 @@ export class player extends model implements eventListenerInterface<player> {
         private socketId: string,
         private playerId: string,
         private gameId: string,
+        private user: User|null,
     ) {
         super();
         this.setupDefaultListeners();
@@ -32,6 +35,8 @@ export class player extends model implements eventListenerInterface<player> {
         this.emit('letterIndexUpdated');
     }
 
+    getUser = () => this.user;
+
     emit(event: string): void {
         const listeners = this.eventListeners.get(event) || [];
         listeners.forEach(listener => listener(this));
@@ -48,5 +53,6 @@ export class player extends model implements eventListenerInterface<player> {
         this.on(model.EVENT_STORED, checkToStartGame);
         this.on(model.EVENT_DESTROYED, checkToRemoveGame);
         this.on('letterIndexUpdated', checkForGameWinner);
+        this.on('letterIndexUpdated', checkToUpdateResults);
     }
 }

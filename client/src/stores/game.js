@@ -1,8 +1,9 @@
 import { computed, ref, watch } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
-import socket from '@/services/socket.js'
+import {socket} from '@/services/socket.js'
 import debounce from '@/helpers/debounce.js'
 import { usePlayerStore } from '@/stores/player.js'
+import {useResultStore} from "@/stores/result.js";
 
 export const useGameStore = defineStore('game', () => {
   const gameId = ref(null)
@@ -17,6 +18,8 @@ export const useGameStore = defineStore('game', () => {
 
   const playerStore = usePlayerStore()
   const { playerId, playerName } = storeToRefs(playerStore)
+
+  const resultStore = useResultStore()
 
   const gameJoined = computed(() => gameId.value !== null)
   const gameStarted = computed(
@@ -116,12 +119,15 @@ export const useGameStore = defineStore('game', () => {
     return true
   }
 
-  const debouncedSendLetterIndex = debounce(index => {
+  const debouncedSendLetterIndex = debounce(async index => {
     socket.emit('gameEvent', gameId.value, {
       playerId: playerId.value,
       playerName: playerName.value,
       letterIndex: index,
     })
+    if (doneTyping.value) {
+      await resultStore.loadAverageWPM();
+    }
   }, 300)
 
   watch(letterIndex, newIndex => {

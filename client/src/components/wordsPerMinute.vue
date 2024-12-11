@@ -2,6 +2,7 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useGameStore } from '@/stores/game.js'
 import { storeToRefs } from 'pinia'
+import {useSettingStore} from "@/stores/setting.js";
 
 const WORD_LENGTH = 5
 const SPACES_PER_WORD = 1
@@ -9,6 +10,9 @@ const SECONDS_IN_MINUTE = 60
 
 const gameStore = useGameStore()
 const { letterIndex, gameStart } = storeToRefs(gameStore)
+
+const settingsStore = useSettingStore()
+const { showCurrentWPM } = storeToRefs(settingsStore)
 
 const doneTyping = computed(() => gameStore.doneTyping)
 const wordsPerMinute = ref(0)
@@ -37,7 +41,7 @@ watch(doneTyping, newValue => {
 </script>
 
 <template>
-  <div class="words-per-minute">{{ wordsPerMinute }} WPM</div>
+  <div class="words-per-minute" v-if="showCurrentWPM || doneTyping">{{ wordsPerMinute }} WPM</div>
 </template>
 
 <style scoped lang="scss">

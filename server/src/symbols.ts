@@ -4,6 +4,7 @@ const symbols = {
     gameRepositoryInterface: Symbol('gameRepositoryInterface'),
     playerRepositoryInterface: Symbol('playerRepositoryInterface'),
     wordRepositoryInterface: Symbol('wordRepositoryInterface'),
+    resultRepositoryInterface: Symbol('resultRepositoryInterface'),
 
     // controllers
     userController: Symbol('userController'),
@@ -16,6 +17,7 @@ const symbols = {
     gameStartService: Symbol('gameStartService'),
     gameRemovalService: Symbol('gameRemovalService'),
     gameWinnerService: Symbol('gameWinnerService'),
+    gameResultService: Symbol('gameResultService'),
 
     // other
     prismaClient: Symbol('prismaClient'),

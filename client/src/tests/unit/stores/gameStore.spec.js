@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { setActivePinia, createPinia, storeToRefs } from 'pinia'
 import { useGameStore } from '@/stores/game.js'
-import socket from '@/services/socket.js'
+import {socket} from '@/services/socket.js'
 import { usePlayerStore } from '@/stores/player.js'
 
 vi.mock('@/services/socket.js')

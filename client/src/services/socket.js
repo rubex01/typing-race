@@ -1,5 +1,15 @@
 import { io } from 'socket.io-client'
 
-const socket = io(import.meta.env.VITE_SOCKET_URL)
+let socket = null;
 
-export default socket
+const recreateSocket = () => {
+  const token = localStorage.getItem('authToken')
+  socket = io(import.meta.env.VITE_SOCKET_URL, {
+    auth: {
+      token
+    },
+  })
+}
+recreateSocket();
+
+export { socket, recreateSocket }

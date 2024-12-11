@@ -6,6 +6,7 @@ import {player} from "@/models/player";
 import symbols from "@/symbols";
 import {wordRepositoryInterface} from "@/repositories/contracts/wordRepositoryInterface";
 import {socketServiceInterface} from "@/services/contracts/socketServiceInterface";
+import {User} from "@prisma/client";
 
 @injectable()
 export class gameRoomService {
@@ -20,14 +21,14 @@ export class gameRoomService {
     ) {
     }
 
-    joinGame = async (gameId: string, socketId: string, data: {playerId: string}) => {
+    joinGame = async (gameId: string, socketId: string, data: {playerId: string, user: User|null}) => {
         const gameToJoin = await this.getOrCreateGame(gameId);
         if (gameToJoin.hasStarted()) {
             return;
         }
 
         this.socketService.join(socketId, gameId);
-        const playerToAdd = new player(socketId, data.playerId, gameId);
+        const playerToAdd = new player(socketId, data.playerId, gameId, data.user);
         await this.playerRepository.storePlayer(playerToAdd);
     }
 

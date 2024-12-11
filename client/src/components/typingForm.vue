@@ -32,7 +32,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <form ref="form" @submit="submitForm" @keyup="submitIfSpace">
+    <form ref="form" @submit="submitForm" @keydown="submitIfSpace">
       <text-input
         ref="input"
         v-model="word"

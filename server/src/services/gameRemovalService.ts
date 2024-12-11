@@ -7,7 +7,7 @@ import {game} from "@/models/game";
 @injectable()
 export class gameRemovalService {
 
-    private REMOVE_GAME_WITH_AMOUNT_OF_PLAYERS = 1;
+    private REMOVE_GAME_WITH_AMOUNT_OF_PLAYERS = 0;
 
     constructor(
         @inject(symbols.gameRepositoryInterface) private gameRepository: gameRepositoryInterface,
