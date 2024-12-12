@@ -2,7 +2,7 @@
 defineProps({
   errors: {
     type: Array,
-    required: true,
+    required: false,
   }
 })
 

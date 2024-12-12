@@ -1,12 +1,8 @@
 <script setup>
 import leave from '@/assets/images/leave.png'
-import {usePlayerStore} from "@/stores/player.js";
+import {signOutUser} from "@/services/userService.js";
 
-const playerStore = usePlayerStore();
-
-const signOut = () => {
-  playerStore.signOut()
-}
+const signOut = () => signOutUser();
 </script>
 
 <template>

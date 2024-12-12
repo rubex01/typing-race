@@ -2,11 +2,8 @@
 import { ref, watch} from 'vue'
 import TextInput from '@/components/textInput.vue'
 import { registerUser} from "@/services/userService.js";
-import {usePlayerStore} from "@/stores/player.js";
 import InputError from "@/components/inputError.vue";
 import {mapApiValidationErrors} from "@/helpers/mapApiValidationErrors.js";
-
-const playerStore = usePlayerStore()
 
 const errors = ref({})
 const name = ref('')
@@ -36,7 +33,6 @@ const register = async (event) => {
   event.preventDefault()
 
   await registerUser(name.value, email.value, password.value)
-    .then(async () => await playerStore.login(email.value, password.value))
     .catch(error => setErrorsFromResponse(error))
 }
 </script>

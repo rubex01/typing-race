@@ -39,11 +39,11 @@ export const useGameStore = defineStore('game', () => {
 
   watch(gameId, (newValue, oldValue) => {
     unsubscribeSocket(oldValue)
-    clearGameState()
+    readyForNewGame()
     subscribeSocket(newValue)
   })
 
-  const clearGameState = () => {
+  const readyForNewGame = () => {
     gameState.value = []
     words.value = []
     letterIndex.value = 0
@@ -52,6 +52,11 @@ export const useGameStore = defineStore('game', () => {
     finalLetterIndex.value = 0
     playerWon.value = false
     playerLost.value = false
+  }
+
+  const clearGameState = () => {
+    readyForNewGame()
+    gameId.value = null
   }
 
   const unsubscribeSocket = id => socket.off(id)
@@ -138,7 +143,7 @@ export const useGameStore = defineStore('game', () => {
     socket.emit('leave', gameId.value)
     unsubscribeSocket(gameId.value)
     gameId.value = null
-    clearGameState()
+    readyForNewGame()
   }
 
   return {
@@ -157,5 +162,6 @@ export const useGameStore = defineStore('game', () => {
     playerWon,
     playerLost,
     finalLetterIndex,
+    clearGameState,
   }
 })

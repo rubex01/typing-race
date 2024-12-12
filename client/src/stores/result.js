@@ -1,23 +1,17 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import {getAverageWPM} from "@/services/resultService.js";
 
 export const useResultStore = defineStore('result', () => {
 
   const averageWPM = ref(0)
 
-  const loadAverageWPM = async () => {
-    const response = await getAverageWPM();
-    const data = response.data;
-    if (!data?.average) {
-      return;
-    }
-
-    averageWPM.value = data.average;
+  const clearResultState = () => {
+    averageWPM.value = 0
   }
 
   return {
-    loadAverageWPM,
-    averageWPM
+    setAverageWPM: (value) => averageWPM.value = value,
+    averageWPM,
+    clearResultState
   }
 })

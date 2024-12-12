@@ -1,14 +1,12 @@
 <script setup>
 import TextInput from "@/components/textInput.vue";
 import {ref} from "vue";
-import {usePlayerStore} from "@/stores/player.js";
 import InputError from "@/components/inputError.vue";
-
-const playerStore = usePlayerStore()
+import {loginUser} from "@/services/userService.js";
 
 const email = ref('');
 const password = ref('');
-const errors = ref([]);
+const errors = ref({});
 
 const setErrorsFromResponse = (responseError) => {
   if (responseError.response.status !== 401) {
@@ -19,7 +17,7 @@ const setErrorsFromResponse = (responseError) => {
 
 const login = async (event) => {
   event.preventDefault()
-  playerStore.login(email.value, password.value)
+  loginUser(email.value, password.value)
     .catch(errors => setErrorsFromResponse(errors))
 }
 </script>
@@ -41,7 +39,7 @@ const login = async (event) => {
       required="required"
       class="login-form-input"
       type="password"
-      error-identifier="password"
+      autocomplete="current-password"
     />
     <input-error :errors="errors.password" />
     <button type="submit" class="login-form-submit"></button>
