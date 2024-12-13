@@ -4,4 +4,5 @@ import {socketServiceInterface} from "@/services/contracts/socketServiceInterfac
 export class mockSocketService implements socketServiceInterface {
     join = vi.fn();
     emit = vi.fn();
+    emitToSocket = vi.fn();
 }

@@ -13,7 +13,7 @@ import {playerIdValueObject} from "@/valueObjects/playerIdValueObject";
 @injectable()
 export class gameRoomService {
 
-    AMOUNT_OF_WORDS = 3;
+    AMOUNT_OF_WORDS = 50;
 
     constructor(
         @inject(symbols.gameRepositoryInterface) private gameRepository: gameRepositoryInterface,
