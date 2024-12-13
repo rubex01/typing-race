@@ -8,4 +8,5 @@ export interface storeResultData {
 export interface resultRepositoryInterface {
     storeResult(resultData: storeResultData): Promise<Result>
     getAverageWPMByUserId(userId: number): Promise<number|null>
+    getLatestByUserId(userId: number): Promise<Result|null>
 }

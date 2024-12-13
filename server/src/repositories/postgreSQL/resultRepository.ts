@@ -36,4 +36,15 @@ export class resultRepository implements resultRepositoryInterface {
         });
         return result._avg.wpm ? Math.round(result._avg.wpm) : null;
     }
+
+    getLatestByUserId = async (userId: number): Promise<Result|null> => {
+        return this.prisma.result.findFirst({
+            where: {
+                userId: userId,
+            },
+            orderBy: {
+                createdAt: 'desc'
+            },
+        });
+    }
 }

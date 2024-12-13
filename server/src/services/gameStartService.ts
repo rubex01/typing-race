@@ -5,6 +5,7 @@ import {gameRepositoryInterface} from "@/repositories/contracts/gameRepositoryIn
 import {playerRepositoryInterface} from "@/repositories/contracts/playerRepositoryInterface";
 import {game} from "@/models/game";
 import {socketServiceInterface} from "@/services/contracts/socketServiceInterface";
+import {gameStartValueObject} from "@/valueObjects/gameStartValueObject";
 
 @injectable()
 export class gameStartService {
@@ -41,11 +42,9 @@ export class gameStartService {
     startGame = async (game: game) => {
         const startTime = new Date(new Date().getTime() + (this.START_GAME_IN_SECONDS * 1000));
         game.setStartTime(startTime)
-
         await this.gameRepository.update(game);
-        this.socketService.emit(game.getGameId(), 'gameStart', {
-            startTime: game.getStartTime(),
-            words: game.getWords(),
-        });
+
+        const gameStart = new gameStartValueObject(startTime, game.getWords())
+        this.socketService.emit(game.getGameId(), 'gameStart', gameStart);
     }
 }

@@ -5,6 +5,7 @@ import {playerRepositoryInterface} from "@/repositories/contracts/playerReposito
 import {player} from "@/models/player";
 import symbols from "@/symbols";
 import {socketServiceInterface} from "@/services/contracts/socketServiceInterface";
+import {gameProgressionValueObject} from "@/valueObjects/gameProgressionValueObject";
 
 type gameProgressionData = {
     letterIndex: number,
@@ -28,22 +29,22 @@ export class gamePlayService {
         if (
             !game ||
             !player ||
-            !this.validateDataPackage(game, player, data)
+            !this.validateDataPackage(game, player)
         ) {
             return;
         }
 
-        this.socketService.emit(gameId, 'gameEvent', data);
+        const gameProgression = new gameProgressionValueObject(data.letterIndex, data.playerName, player.getPlayerId());
+        this.socketService.emit(gameId, 'gameEvent', gameProgression);
 
         player.setLetterIndex(data.letterIndex);
         await this.playerRepository.updatePlayer(player);
     }
 
-    validateDataPackage = (game: game, player: player, data: gameProgressionData): boolean => {
+    validateDataPackage = (game: game, player: player): boolean => {
         return (
             game.hasStarted() &&
-            player.getGameId() === game.getGameId() &&
-            data.playerId === player.getPlayerId()
+            player.getGameId() === game.getGameId()
         );
     }
 }

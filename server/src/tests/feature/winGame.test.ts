@@ -16,8 +16,8 @@ describe('Winning a game', () => {
             new Date(),
             ['word1', 'word2', 'word3']
         );
-        testPlayer1 = new player('socketid1', 'name1', 'gameId');
-        testPlayer2 = new player('socketid2', 'name2', 'gameId');
+        testPlayer1 = new player('socketid1', 'name1', 'gameId', null);
+        testPlayer2 = new player('socketid2', 'name2', 'gameId', null);
     });
 
     it('has winner after a player finished', async () => {

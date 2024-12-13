@@ -3,7 +3,6 @@ import container from "@/container";
 import {gameRoomService} from "@/services/gameRoomService";
 import symbols from "@/symbols";
 import {playerRepositoryInterface} from "@/repositories/contracts/playerRepositoryInterface";
-import {gameRepositoryInterface} from "@/repositories/contracts/gameRepositoryInterface";
 
 describe('Winning a game', () => {
     let service: gameRoomService;
@@ -35,11 +34,10 @@ describe('Winning a game', () => {
 
     it('does join a game when it has not started yet', async () => {
         const game = await service.createGame('random');
-        await service.joinGame(game.getGameId(), 'socketId', {playerId: 'playerId'});
+        await service.joinGame(game.getGameId(), 'socketId', null);
 
         const playerRepository = container.resolve<playerRepositoryInterface>(symbols.playerRepositoryInterface);
         const player = await playerRepository.getBySocketId('socketId');
         expect(player?.getGameId()).toEqual(game.getGameId());
-        expect(player?.getPlayerId()).toEqual('playerId');
     });
 });

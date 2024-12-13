@@ -12,6 +12,7 @@ describe('playerState Test Suite', () => {
             'socket',
             'name',
             'gameid',
+            null,
         )
     });
 

@@ -33,6 +33,7 @@ export class userController {
             response.status(401).json({
                 message: 'Authentication failed',
             })
+            return;
         }
 
         response.status(200).json({token})

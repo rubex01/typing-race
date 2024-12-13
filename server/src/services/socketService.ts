@@ -1,7 +1,7 @@
 import {injectable} from "tsyringe";
 import {Server} from "socket.io";
 import {ioServer} from "@/server";
-import {socketServiceInterface} from "@/services/contracts/socketServiceInterface";
+import {emitable, socketServiceInterface} from "@/services/contracts/socketServiceInterface";
 
 @injectable()
 export class socketService implements socketServiceInterface {
@@ -15,13 +15,10 @@ export class socketService implements socketServiceInterface {
         }
     }
 
-    emit = (room: string, type: string, data: any) => {
+    emit = (room: string, type: string, data: emitable) => {
         this.io.to(room).emit(room, {
             type,
-            data: {
-                ...data,
-            },
+            data: data.getEmitData(),
         });
     }
-
 }

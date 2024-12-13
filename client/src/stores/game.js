@@ -126,7 +126,6 @@ export const useGameStore = defineStore('game', () => {
 
   const debouncedSendLetterIndex = debounce(async index => {
     socket.emit('gameEvent', gameId.value, {
-      playerId: playerId.value,
       playerName: playerName.value,
       letterIndex: index,
     })

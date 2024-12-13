@@ -19,9 +19,8 @@ export const gameSockets = () => {
     });
 
     ioServer.on('connection', (socket) => {
-        socket.on('join', async (gameId, data) => {
-            // TODO: validation on data
-            await roomService.joinGame(gameId, socket.id, {...data, user: socket.user});
+        socket.on('join', async (gameId) => {
+            await roomService.joinGame(gameId, socket.id, socket.user);
 
             socket.on('disconnect', async () => {
                 await roomService.leaveGame(socket.id)

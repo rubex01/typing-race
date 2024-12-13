@@ -8,6 +8,7 @@ describe('player model Test Suite', () => {
             'socket',
             'name',
             'gameid',
+            null,
         );
     });
 

@@ -15,6 +15,7 @@ describe('Player Repository Test', () => {
             'socket123',
             'player123',
             'game123',
+            null,
         );
     });
 
@@ -57,7 +58,7 @@ describe('Player Repository Test', () => {
     });
 
     it('should count players for a game ID', async () => {
-        const player2 = new player('socket456', 'player456', 'game123');
+        const player2 = new player('socket456', 'player456', 'game123', null,);
         await repository.storePlayer(testPlayer);
         await repository.storePlayer(player2);
 
