@@ -8,11 +8,12 @@ import {wordRepositoryInterface} from "@/repositories/contracts/wordRepositoryIn
 import {socketServiceInterface} from "@/services/contracts/socketServiceInterface";
 import {User} from "@prisma/client";
 import { v4 as uuidv4 } from 'uuid';
+import {playerIdValueObject} from "@/valueObjects/playerIdValueObject";
 
 @injectable()
 export class gameRoomService {
 
-    AMOUNT_OF_WORDS = 50;
+    AMOUNT_OF_WORDS = 3;
 
     constructor(
         @inject(symbols.gameRepositoryInterface) private gameRepository: gameRepositoryInterface,
@@ -31,6 +32,7 @@ export class gameRoomService {
         this.socketService.join(socketId, gameId);
         const playerToAdd = new player(socketId, uuidv4(), gameId, user);
         await this.playerRepository.storePlayer(playerToAdd);
+        this.socketService.emitToSocket(socketId, 'receivePlayerId', new playerIdValueObject(playerToAdd.getPlayerId()));
     }
 
     leaveGame = async (socketId: string) => {

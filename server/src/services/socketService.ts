@@ -21,4 +21,15 @@ export class socketService implements socketServiceInterface {
             data: data.getEmitData(),
         });
     }
+
+    emitToSocket = (socketId: string, event: string, data: emitable) => {
+        const socket = this.io.sockets.sockets.get(socketId);
+        if (!socket) {
+            return;
+        }
+        socket.emit(event, {
+            type: event,
+            data: data.getEmitData(),
+        });
+    }
 }

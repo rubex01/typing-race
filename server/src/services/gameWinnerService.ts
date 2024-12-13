@@ -5,6 +5,7 @@ import {gameRepositoryInterface} from "@/repositories/contracts/gameRepositoryIn
 import {game} from "@/models/game";
 import {player} from "@/models/player";
 import {socketServiceInterface} from "@/services/contracts/socketServiceInterface";
+import {gameWinnerValueObject} from "@/valueObjects/gameWinnerValueObject";
 
 @injectable()
 export class gameWinnerService {
@@ -48,9 +49,6 @@ export class gameWinnerService {
             return;
         }
 
-        this.socketService.emit(game.getGameId(), "gameWinner", {
-                winner: winnerPlayerId
-            },
-        );
+        this.socketService.emit(game.getGameId(), "gameWinner", new gameWinnerValueObject(winnerPlayerId));
     }
 }

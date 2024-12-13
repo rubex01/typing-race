@@ -4,9 +4,11 @@ import {socket} from '@/services/socket.js'
 import debounce from '@/helpers/debounce.js'
 import { usePlayerStore } from '@/stores/player.js'
 import {useResultStore} from "@/stores/result.js";
+import {getAndStoreAverageWPM} from "@/services/resultService.js";
 
 export const useGameStore = defineStore('game', () => {
   const gameId = ref(null)
+  const playerId = ref(null)
   const words = ref([])
   const finalLetterIndex = ref(0)
   const letterIndex = ref(0)
@@ -17,9 +19,7 @@ export const useGameStore = defineStore('game', () => {
   const playerLost = ref(false)
 
   const playerStore = usePlayerStore()
-  const { playerId, playerName } = storeToRefs(playerStore)
-
-  const resultStore = useResultStore()
+  const { playerName } = storeToRefs(playerStore)
 
   const gameJoined = computed(() => gameId.value !== null)
   const gameStarted = computed(
@@ -30,17 +30,17 @@ export const useGameStore = defineStore('game', () => {
   const joinGame = id => {
     if (id === '') return
     gameId.value = id
-    socket.emit('join', gameId.value, {
-      playerId: playerId.value,
-    })
+    socket.emit('join', gameId.value)
   }
 
   const createGame = id => joinGame(id)
 
   watch(gameId, (newValue, oldValue) => {
     unsubscribeSocket(oldValue)
+    unsubscribeSocket('receivePlayerId')
     readyForNewGame()
     subscribeSocket(newValue)
+    subscribeSocket('receivePlayerId')
   })
 
   const readyForNewGame = () => {
@@ -52,6 +52,7 @@ export const useGameStore = defineStore('game', () => {
     finalLetterIndex.value = 0
     playerWon.value = false
     playerLost.value = false
+    playerId.value = null
   }
 
   const clearGameState = () => {
@@ -61,13 +62,17 @@ export const useGameStore = defineStore('game', () => {
 
   const unsubscribeSocket = id => socket.off(id)
 
-  const subscribeSocket = id =>
+  const subscribeSocket = id => {
     socket.on(id, data => {
       handleServerData(data)
     })
+  }
 
   const handleServerData = data => {
     switch (data.type) {
+      case 'receivePlayerId':
+        playerId.value = data.data.playerId
+        break
       case 'gameStart':
         handleGameStart(data.data)
         break
@@ -130,7 +135,7 @@ export const useGameStore = defineStore('game', () => {
       letterIndex: index,
     })
     if (doneTyping.value) {
-      await resultStore.loadAverageWPM();
+      await getAndStoreAverageWPM()
     }
   }, 300)
 
@@ -162,5 +167,6 @@ export const useGameStore = defineStore('game', () => {
     playerLost,
     finalLetterIndex,
     clearGameState,
+    playerId,
   }
 })

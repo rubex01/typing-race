@@ -4,10 +4,10 @@ import { storeToRefs } from 'pinia'
 import { usePlayerStore } from '@/stores/player.js'
 
 const gameStore = useGameStore()
-const { gameId } = storeToRefs(gameStore)
+const { gameId, playerId } = storeToRefs(gameStore)
 
 const playerStore = usePlayerStore()
-const { playerId, playerName } = storeToRefs(playerStore)
+const { playerName } = storeToRefs(playerStore)
 </script>
 
 <template>
