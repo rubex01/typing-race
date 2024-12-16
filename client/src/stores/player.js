@@ -24,5 +24,5 @@ export const usePlayerStore = defineStore('player', () => {
     remoteId.value = null
   }
 
-  return { setPlayer, isReady, playerName, clearPlayerState }
+  return { setPlayer, isReady, playerName, clearPlayerState, playerEmail, remoteId }
 })

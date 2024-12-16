@@ -4,8 +4,6 @@ import symbols from "@/symbols";
 import {gameRepositoryInterface} from "@/repositories/contracts/gameRepositoryInterface";
 import {resultRepositoryInterface} from "@/repositories/contracts/resultRepositoryInterface";
 import {game} from "@/models/game";
-import {start} from "node:repl";
-
 
 @injectable()
 export class gameResultService {

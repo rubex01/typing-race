@@ -43,17 +43,13 @@ describe('useGameStore', () => {
   it('should join a game and emit socket event', () => {
     gameStore.joinGame('game123')
     expect(gameStore.gameId).toBe('game123')
-    expect(socket.emit).toHaveBeenCalledWith('join', 'game123', {
-      playerId: 'test-player-id',
-    })
+    expect(socket.emit).toHaveBeenCalledWith('join', 'game123')
   })
 
   it('should create a game by joining', () => {
     gameStore.createGame('game456')
     expect(gameStore.gameId).toBe('game456')
-    expect(socket.emit).toHaveBeenCalledWith('join', 'game456', {
-      playerId: 'test-player-id',
-    })
+    expect(socket.emit).toHaveBeenCalledWith('join', 'game456')
   })
 
   it('should leave the game and clean up', () => {
