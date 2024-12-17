@@ -16,5 +16,4 @@ export class resultController {
             average: result,
         });
     }
-
 }

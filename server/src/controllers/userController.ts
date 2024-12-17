@@ -13,7 +13,7 @@ export class userController {
     ) {}
 
     store = async (request: Request, response: Response): Promise<void> => {
-        const user = await this.userRepository.storePlayer({
+        const user = await this.userRepository.store({
             name: request.body.name,
             email: request.body.email,
             password: request.body.password,

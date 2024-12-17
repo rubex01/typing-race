@@ -10,7 +10,7 @@ export class userRepository implements userRepositoryInterface {
         @inject(symbols.prismaClient) private readonly prisma: PrismaClient,
     ) {}
 
-    storePlayer =  async (data: storeUserData) => {
+    store =  async (data: storeUserData) => {
         return this.prisma.user.create({
             data: {
                 name: data.name,

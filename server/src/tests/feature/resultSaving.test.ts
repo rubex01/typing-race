@@ -18,7 +18,7 @@ describe('Result saving of game', () => {
     beforeEach(async () => {
         vi.useFakeTimers();
         const userRepository = container.resolve<userRepositoryInterface>(symbols.userRepositoryInterface);
-        user1 = await userRepository.storePlayer({
+        user1 = await userRepository.store({
             name: 'name1',
             email: 'email1',
             password: 'password1'

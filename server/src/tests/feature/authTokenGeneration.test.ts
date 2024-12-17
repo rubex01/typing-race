@@ -22,7 +22,7 @@ describe('auth token generation', () => {
 
     it('generates an auth token that can be authorized to a user', async () => {
         const userRepository = container.resolve<userRepositoryInterface>(symbols.userRepositoryInterface);
-        const user = await userRepository.storePlayer({
+        const user = await userRepository.store({
             email: uuidv4() + '@example.com',
             password: 'password',
             name: 'randomadafn'
@@ -45,7 +45,7 @@ describe('auth token generation', () => {
 
     it('can create a token by authenticating a user', async () => {
         const userRepository = container.resolve<userRepositoryInterface>(symbols.userRepositoryInterface);
-        const user = await userRepository.storePlayer({
+        const user = await userRepository.store({
             email: uuidv4() + '@example.com',
             password: 'password',
             name: 'randomadafn'

@@ -15,7 +15,7 @@ describe('Logging in', () => {
     });
 
     it('logs in when account exists and password is right', async () => {
-        await repository.storePlayer({
+        await repository.store({
             name: 'Test User',
             email: 'test123@example.com',
             password: 'plaintextpassword123',
@@ -67,7 +67,7 @@ describe('Logging in', () => {
     });
 
     it('does not log in when password is wrong', async () => {
-        await repository.storePlayer({
+        await repository.store({
             name: 'Test User',
             email: 'test12aa3@example.com',
             password: 'plaintextpassword123',
