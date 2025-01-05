@@ -22,9 +22,16 @@ const signOut = () => signOutUser();
   align-items: center;
   cursor: pointer;
 
+  &:hover {
+    & img {
+      transform: translateX(-.2rem);
+    }
+  }
+
   &-image {
     width: 2rem;
     height: 2rem;
+    transition: .3s;
   }
 
   &-text {

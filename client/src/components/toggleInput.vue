@@ -92,11 +92,21 @@ defineEmits(['update:modelValue'])
       &-off {
         box-shadow: 5px 0 17px 3px rgba(0, 0, 0, .25);
         margin-left: 0.7rem;
+
+        &:active {
+          margin-left: 1rem;
+          transform: scale(.9);
+        }
       }
 
       &-on {
         margin-left: 5.3rem;
         box-shadow: -6px 0 17px 3px rgba(0, 0, 0, .25);
+
+        &:active {
+          margin-left: 5rem;
+          transform: scale(.9);
+        }
       }
     }
   }

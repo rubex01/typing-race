@@ -42,9 +42,16 @@ const showSettings = ref(false)
     align-items: center;
     cursor: pointer;
 
+    &:hover {
+      img {
+        transform: rotate(90deg);
+      }
+    }
+
     & img {
       width: 2rem;
       height: 2rem;
+      transition: 0.3s;
     }
 
     & span {
