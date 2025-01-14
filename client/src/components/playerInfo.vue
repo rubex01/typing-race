@@ -22,7 +22,7 @@ const highAverageWPM = computed(() => averageWPM.value > 100)
     <div class="player-info-text">
       <div class="player-info-text-name">{{ playerName }}</div>
       <div class="player-info-text-wpm" :class="highAverageWPM ? 'player-info-text-wpm-high' : ''">
-        {{ averageWPM }}wpm
+        {{ averageWPM ?? 0 }}wpm
       </div>
     </div>
   </div>
