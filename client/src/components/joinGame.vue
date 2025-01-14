@@ -25,7 +25,6 @@ const joinGame = event => {
         v-model="gameId"
         required="required"
         placeholder="Game id"
-        :inputStyle="{ paddingRight: '12rem' }"
       />
       <default-button type="submit" class="join-game-form-button"
         >Join</default-button
@@ -44,7 +43,7 @@ const joinGame = event => {
     &-input {
 
       @include mixins.mobile {
-        width: 5rem;
+        width: 18rem;
       }
 
       &:hover {
